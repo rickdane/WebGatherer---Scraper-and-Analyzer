@@ -54,11 +54,14 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     public void run() {
         this.workflowList = workflowList;
 
-        Map<String, Object> workflowParams = new HashMap<String, Object>();
-        workflowParams.put("ControllerFlow", this);
-        workflowParams.put("workflowList",workflowList);
-        workflowParams.put("parameterMap",parameterMap);
-        workflowWrapper.runWorfklow(workflowList.get(0), workflowParams);
+//        Map<String, Object> workflowParams = new HashMap<String, Object>();
+//        workflowParams.put("ControllerFlow", this);
+//        workflowParams.put("workflowList",workflowList);
+//        workflowParams.put("parameterMap",parameterMap);
+//        workflowWrapper.runWorfklow(workflowList.get(0), workflowParams);
+
+        launchScraperThread("googleScrape", parameterMap, workflowList.get(0), 1, true);
+        launchDataProcessorThread("dataProcess1",parameterMap, workflowList.get(1), 1);
 
         autoRunFlow();
     }

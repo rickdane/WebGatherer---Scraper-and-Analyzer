@@ -18,14 +18,13 @@ public class main {
         Injector injector = Guice.createInjector(new DependencyBindingModule());
 
         ControllerFlow wfContrl = injector.getInstance(ControllerFlow.class);
-        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl,"default_ThreadLaunch","default_WebScrape","one_DataInterpretor");
+        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl,"org.WorkflowExample.Workflows.Workflow_WebGather_1","org.WorkflowExample.Workflows.Workflow_DataInterpretor_1");
 
         testPrintResults(finalOutputContainer);
     }
 
-    private static FinalOutputContainer launchWebGathererThread(Injector injector, ControllerFlow wfContrl, String workflow1, String workflow2, String workflow3) {
+    private static FinalOutputContainer launchWebGathererThread(Injector injector, ControllerFlow wfContrl, String workflow2, String workflow3) {
         List worfklowList = new ArrayList();
-        worfklowList.add(workflow1);
         worfklowList.add(workflow2);
         worfklowList.add(workflow3);
 

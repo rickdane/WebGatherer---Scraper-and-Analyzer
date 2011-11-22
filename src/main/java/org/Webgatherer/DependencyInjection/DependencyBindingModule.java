@@ -16,6 +16,7 @@ import org.Webgatherer.Controller.ControllerFlow;
 import org.Webgatherer.Controller.WorkflowControllerImpl_1;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import org.Webgatherer.Workflow.WorkflowWrapperImpl_External;
 
 /**
  * @author Rick Dane
@@ -32,7 +33,7 @@ public class DependencyBindingModule extends AbstractModule {
 
         bind(FinalOutputContainer.class).to(FinalOutputContainerImpl.class);
 
-        bind (WorkflowWrapper.class).to(WorfkflowWrapperImpl_Reflection.class).in(Singleton.class);
+        bind (WorkflowWrapper.class).to(WorkflowWrapperImpl_External.class).in(Singleton.class);
 
         bind (WebGather.class).to(WebGatherImpl.class);
 
