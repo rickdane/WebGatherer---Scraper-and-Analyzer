@@ -1,8 +1,10 @@
 package org.Webgatherer.WorkflowExample.Workflows.Base;
 
 import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * @author Rick Dane
@@ -16,5 +18,9 @@ public abstract class WorkflowBase {
     }
 
     public abstract void runWorkflow(Map<String, Object> workflowParams);
+
+    protected void runSubWorkflow (Class clazz) {
+
+    }
 
 }

@@ -22,21 +22,21 @@ public interface ThreadCommunication {
      */
     public Boolean shouldBeRunning();
 
-    public void addToOutputDataHolder(String string);
+    public void addToOutputDataHolder(String[] string);
 
-    public void addToSendbackDataHolder(String string);
+    public void addToSendbackDataHolder(String[] string);
 
     public boolean isSendbackDataHolderEmpty();
 
-    public String getFromSendbackDataHolder();
+    public String[] getFromSendbackDataHolder();
 
     public boolean isPageQueueEmpty();
 
-    public String getFromPageQueue();
+    public String[] getFromPageQueue();
 
     public int getCheckQuitInterval ();
 
-    public String getFromOutputDataHolder();
+    public String[] getFromOutputDataHolder();
 
     public void setCheckQuitInterval (int checkQuitInterval);
 
@@ -54,5 +54,5 @@ public interface ThreadCommunication {
 
     public void setCustomDataMap (Map map);
 
-    public void addToPageQueue (String page);
+    public void addToPageQueue (String[] page);
 }

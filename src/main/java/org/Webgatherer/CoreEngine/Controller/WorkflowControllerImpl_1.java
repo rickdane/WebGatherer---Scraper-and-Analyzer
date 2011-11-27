@@ -78,12 +78,12 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
                 while (!curThreadComm.isOutputDataHolderEmpty() || !curThreadComm.isSendbackDataHolderEmpty()) {
 
                     if (i != sizeThreadTrackMin1 && !curThreadComm.isOutputDataHolderEmpty()) {
-                        String curStr = curThreadComm.getFromOutputDataHolder();
+                        String[] curStr = curThreadComm.getFromOutputDataHolder();
                         ThreadCommunication nextThreadComm = threadTracker.get(threadTrackerOrder.get(i + 1));
                         nextThreadComm.addToPageQueue(curStr);
                     }
                     if (i != 0 && !curThreadComm.isSendbackDataHolderEmpty()) {
-                        String curStr = curThreadComm.getFromSendbackDataHolder();
+                        String[] curStr = curThreadComm.getFromSendbackDataHolder();
                         ThreadCommunication prevThreadComm = threadTracker.get(threadTrackerOrder.get(i - 1));
                         prevThreadComm.addToPageQueue(curStr);
                     }

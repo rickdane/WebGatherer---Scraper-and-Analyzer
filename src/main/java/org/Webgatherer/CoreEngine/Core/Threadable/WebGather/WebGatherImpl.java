@@ -34,9 +34,10 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
         runQueue();
     }
 
-    public void retrievePageFromUrl(String url) {
-        driver.get(url);
-        threadCommunication.addToOutputDataHolder(driver.getPageSource());
+    public void retrievePageFromUrl(String[] entry) {
+        driver.get(entry[1]);
+        entry[1] = driver.getPageSource();
+        threadCommunication.addToOutputDataHolder(entry);
     }
 
     public void runQueue() {

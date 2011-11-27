@@ -18,13 +18,13 @@ public class ExampleRun {
         Injector injector = Guice.createInjector(new DependencyBindingModule());
 
         ControllerFlow wfContrl = injector.getInstance(ControllerFlow.class);
-        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl,"org.Webgatherer.WorkflowExample.Workflows.Workflow_WebGather_1","org.Webgatherer.WorkflowExample.Workflows.Workflow_DataInterpretor_1");
+        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, "org.Webgatherer.WorkflowExample.Workflows.Workflow_WebGather_1", "org.Webgatherer.WorkflowExample.Workflows.Workflow_DataInterpretor_1");
 
         testPrintResults(finalOutputContainer);
     }
 
     private static FinalOutputContainer launchWebGathererThread(Injector injector, ControllerFlow wfContrl, String workflow2, String workflow3) {
-        List <String> workflowlist = new ArrayList <String> ();
+        List<String> workflowlist = new ArrayList<String>();
         workflowlist.add(workflow2);
         workflowlist.add(workflow3);
 
@@ -65,11 +65,16 @@ public class ExampleRun {
 
     private static Queue testLoadPages() {
 
-        Queue<String> pageQueue = new LinkedList<String>();
+        Queue<String[]> pageQueue = new LinkedList<String[]>();
 
-        pageQueue.add("http://espn.com");
-        pageQueue.add("http://reddit.com");
-        pageQueue.add("http://tumblr.com");
+
+        String[] site1 = {"espn.com", "http://espn.com"};
+        String[] site2 = {"reddit.com", "http://reddit.com"};
+        String[] site3 = {"tumblr.com", "http://tumblr.com"};
+
+        pageQueue.add(site1);
+        pageQueue.add(site2);
+        pageQueue.add(site3);
         return pageQueue;
     }
 

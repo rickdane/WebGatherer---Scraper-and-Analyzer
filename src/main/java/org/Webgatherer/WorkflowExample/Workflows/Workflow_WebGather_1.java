@@ -23,8 +23,8 @@ public class Workflow_WebGather_1 extends WorkflowBase {
         ThreadCommunication threadCommunication = (ThreadCommunication) workflowParams.get("threadCommunication");
         FinalOutputContainer finalOutputContainer = (FinalOutputContainer) workflowParams.get("finalOutputContainer");
 
-        String curItem = threadCommunication.getFromPageQueue();
+        String[] curEntry = threadCommunication.getFromPageQueue();
 
-        webGather.retrievePageFromUrl(curItem);
+        webGather.retrievePageFromUrl(curEntry);
     }
 }

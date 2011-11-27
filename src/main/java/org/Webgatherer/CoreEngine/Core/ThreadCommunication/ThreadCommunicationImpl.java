@@ -8,9 +8,9 @@ import java.util.*;
 @SuppressWarnings({"ALL"})
 public class ThreadCommunicationImpl extends ThreadCommunicationBase implements ThreadCommunication {
 
-    private final Queue<String> outputDataHolder = new LinkedList<String>();
-    private volatile Queue<String> pageQueue = new LinkedList<String>();
-    private final  Queue<String> sendbackDataHolder = new LinkedList<String>();
+    private final Queue<String[]> outputDataHolder = new LinkedList<String[]>();
+    private volatile Queue<String[]> pageQueue = new LinkedList<String[]>();
+    private final  Queue<String[]> sendbackDataHolder = new LinkedList<String[]>();
     private volatile  Map<String, Object> customDataMap = new HashMap<String, Object>();
 
     public void setPageQueue(Queue pageQueue) {
@@ -23,7 +23,7 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
         return outputDataHolder.isEmpty();
     }
 
-    public void addToOutputDataHolder(String string) {
+    public void addToOutputDataHolder(String[] string) {
         outputDataHolder.add(string);
     }
 
@@ -31,14 +31,14 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
         return sendbackDataHolder.isEmpty();
     }
 
-    public String getFromOutputDataHolder() {
+    public String[] getFromOutputDataHolder() {
         if (!isOutputDataHolderEmpty()) {
             return outputDataHolder.remove();
         }
         return null;
     }
 
-    public String getFromSendbackDataHolder() {
+    public String[] getFromSendbackDataHolder() {
         if (!isSendbackDataHolderEmpty()) {
             return sendbackDataHolder.remove();
         }
@@ -49,7 +49,7 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
         return pageQueue.isEmpty();
     }
 
-    public String getFromPageQueue() {
+    public String[] getFromPageQueue() {
         if (!isPageQueueEmpty()) {
             return pageQueue.remove();
         }
@@ -60,7 +60,7 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
 
     }
 
-    public void addToSendbackDataHolder(String string) {
+    public void addToSendbackDataHolder(String[] string) {
         sendbackDataHolder.add(string);
     }
 
@@ -86,7 +86,7 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
             }
     }
 
-    public void addToPageQueue(String page) {
+    public void addToPageQueue(String[] page) {
         synchronized (pageQueue) {
             pageQueue.add(page);
         }
