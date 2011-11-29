@@ -1,8 +1,4 @@
--- Note: The core of this project is still under heavy development. I tend to get into periods where I am playing around with the code / hacking and
-then later once its to my liking I go back and refactor to make the code cleaner (make sure Dependency injection is fully implemented for that code, programmed to
-interfaces where needed, logical names, etc). Because of this, I sometimes also put off writing more documentation, so if you're interested in this project
-please email me directly as, for one, that forces me to write more documentation down and to summarize the current state of the project, and I'm always
-interested to network with others who mare share an interest in a project like this.
+-- Note: The core of this project is still under heavy development. I tend to get into periods where I am playing around with the code / hacking and then later once its to my liking I go back and refactor to make the code cleaner (make sure Dependency injection is fully implemented for that code, programmed to interfaces where needed, logical names, etc). Because of this, I sometimes also put off writing more documentation, so if you're interested in this project please email me directly as, for one, that forces me to write more documentation down and to summarize the current state of the project, and I'm always interested to network with others who mare share an interest in a project like this.
 
 rick_developer@gmx.com
 
