@@ -44,6 +44,10 @@ public class HtmlParserImpl implements HtmlParser {
         return stringBuffer.toString();
     }
 
+    public List<String> extractEmailAddresses(String htmlPage) {
+          return null;
+    }
+
     private void defaultConfigHtmlCleaner() {
         htmlCleanerProperties.setOmitComments(true);
         htmlCleanerProperties.setTreatUnknownTagsAsContent(true);
