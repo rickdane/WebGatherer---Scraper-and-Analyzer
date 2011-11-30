@@ -1,4 +1,4 @@
-package org.Webgatherer.CoreEngine.Controller;
+package org.Webgatherer.Controller;
 
 import org.Webgatherer.CoreEngine.Core.Threadable.DataInterpreatation.DataInterpretor;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;

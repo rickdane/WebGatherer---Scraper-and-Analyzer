@@ -1,13 +1,14 @@
 package org.Webgatherer.ExperimentalLabs.HtmlProcessing;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rick Dane
  */
 public interface HtmlParser {
 
-    public List<String> extractLinks(String htmlPage);
+    public Map<String, String> extractLinks(String baseUrl, String htmlPage);
 
     public String getText(String htmlPage);
 

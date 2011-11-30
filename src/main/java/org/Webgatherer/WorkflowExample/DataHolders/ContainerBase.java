@@ -2,9 +2,11 @@ package org.Webgatherer.WorkflowExample.DataHolders;
 
 import org.Webgatherer.WorkflowExample.Status.StatusIndicator;
 
-/**This is a data holder container that specifically holds text article / page content. It is not thread-safe and is not meant to be
+/**
+ * This is a data holder container that specifically holds text article / page content. It is not thread-safe and is not meant to be
  * used in a way that requires thread safety. Instead, it stays "locked" until its done being used and only then can it be released
  * to a class other than the one that created it.
+ *
  * @author Rick Dane
  */
 public class ContainerBase {
@@ -14,7 +16,7 @@ public class ContainerBase {
     private final String[] entries;
     private final int maxAttempts;
     private int numberOfAttempts;
-    private boolean isLocked = false;
+    private boolean isUnLocked = false;
 
     public ContainerBase(String identifier, int maxEntries, int maxAttempts) {
         this.maxEntries = maxEntries;
@@ -25,11 +27,11 @@ public class ContainerBase {
 
     public StatusIndicator addContent(String content) {
         int size = entries.length;
-        if (isLocked()) {
+        if (isUnLocked()) {
             return StatusIndicator.FULL;
         }
         if (size == maxEntries) {
-            isLocked = true;
+            isUnLocked = true;
             return StatusIndicator.JUSTUNLOCKED;
         }
         entries[size - 1] = content;
@@ -39,8 +41,8 @@ public class ContainerBase {
     public StatusIndicator incrementAttempts() {
         numberOfAttempts++;
         if (numberOfAttempts >= maxAttempts) {
-            if (!isLocked()) {
-               isLocked = true;
+            if (!isUnLocked()) {
+                isUnLocked = true;
                 return StatusIndicator.JUSTUNLOCKED;
             }
 
@@ -48,8 +50,15 @@ public class ContainerBase {
         return StatusIndicator.SUCCESS;
     }
 
-    public boolean isLocked() {
-        return isLocked;
+    public boolean isUnLocked() {
+        return isUnLocked;
+    }
+
+    public String[] getEntries() {
+        if (!isUnLocked) {
+            return null;
+        }
+        return entries;
     }
 
 }

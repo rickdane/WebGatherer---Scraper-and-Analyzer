@@ -7,10 +7,12 @@ import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.Threadable.DataInterpreatation.DataInterpretor;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParser;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParserImpl;
+import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 import org.Webgatherer.WorkflowExample.DataHolders.DataHolder;
 import org.Webgatherer.WorkflowExample.DataHolders.DataHolderImpl;
 import org.Webgatherer.WorkflowExample.Status.StatusIndicator;
 import org.Webgatherer.WorkflowExample.Workflows.Base.WorkflowBase;
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.ardverk.collection.PatriciaTrie;
 import org.ardverk.collection.StringKeyAnalyzer;
 import org.ardverk.collection.Trie;
@@ -24,10 +26,16 @@ import java.util.*;
 public class Workflow_DataInterpretor_1 extends WorkflowBase {
 
     private Trie<String, DataHolder> trie = new PatriciaTrie<String, DataHolder>(StringKeyAnalyzer.INSTANCE);
-    private Provider<HtmlCleaner> htmlCleanerProvider;
+
     private DataHolder dataHolder;
+    private String curEntryKey;
+    private String curPageBaseUrl;
+    private FinalOutputContainer finalOutputContainer;
+    private ThreadCommunication threadCommunication;
+
+    private List<String> trackSentBackLinks = new ArrayList<String>();
     //TODO DI
-    HtmlCleaner htmlCleaner = htmlCleanerProvider.get();
+
     HtmlParser htmlParser;
 
     public Workflow_DataInterpretor_1(Injector injector) {
@@ -40,26 +48,45 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
         this.htmlCleanerProvider = injector.getProvider(HtmlCleaner.class);
 
         DataInterpretor dataInterpretor = (DataInterpretor) workflowParams.get("dataInterpretor");
-        ThreadCommunication threadCommunication = (ThreadCommunication) workflowParams.get("threadCommunication");
-        FinalOutputContainer finalOutputContainer = (FinalOutputContainer) workflowParams.get("finalOutputContainer");
+        threadCommunication = (ThreadCommunication) workflowParams.get("threadCommunication");
+        finalOutputContainer = (FinalOutputContainer) workflowParams.get("finalOutputContainer");
 
         String[] curEntry = threadCommunication.getFromPageQueue();
 
-        String parsedHtml = htmlParser.getText(curEntry[1]);
+        curEntryKey = curEntry[0];
+        String curScrapedPage = curEntry[3];
+        curPageBaseUrl = null;
 
-        dataHolder = trie.get(curEntry[0]);
+        String curCategory = curEntry[2];
+        curPageBaseUrl = curEntry[1];
+
+
+        dataHolder = trie.get(curEntryKey);
         if (dataHolder == null) {
             dataHolder = new DataHolderImpl();
-            dataHolder.createContainer("aboutus", 1, 20);
-            trie.put(curEntry[0], dataHolder);
+            dataHolder.createContainer("aboutus", 1, 1);
+            trie.put(curEntryKey, dataHolder);
         }
 
-        if (curEntry.equals("aboutus") && dataHolder.checkIfContainerAvailable("aboutus") == StatusIndicator.AVAILABLE) {
+
+        if (curCategory != null && curCategory.equals("aboutus") && dataHolder.checkIfContainerAvailable("aboutus") == StatusIndicator.AVAILABLE) {
+            addPageToDataHolder("aboutus", curScrapedPage);
+            //addEmailAddresses(curScrapedPage);
 
         }
 
-        addEmailAddresses(parsedHtml);
+        //move any finished containers to the finished queue
+        if (!dataHolder.isFinishedContainerQueueEmpty()) {
+            while (!dataHolder.isFinishedContainerQueueEmpty()) {
+                ContainerBase cb = dataHolder.pullFromFinishedContainerQueue();
+                finalOutputContainer.addToFinalOutputContainer(curEntryKey, cb);
+            }
+        }
 
+        LinkedList<String> tokenstoCheckFor = new LinkedList<String>();
+        tokenstoCheckFor.add("about us");
+        tokenstoCheckFor.add("info");
+        extractLinksForSendbackThatMatchKeys(tokenstoCheckFor, curScrapedPage, "aboutus");
     }
 
 
@@ -68,7 +95,7 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
         if (status == StatusIndicator.DOESNOTEXIST) {
             dataHolder.createContainer(label, 1, 20);
         }
-        dataHolder.addEntryToContainer("aboutus", parsedHtml);
+        dataHolder.addEntryToContainer(label, parsedHtml);
     }
 
 
@@ -83,12 +110,23 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
 
     /**
      * Extracts links from a page that match one from the list passed in, sends to sendback object with specified internal label
-     *
-     * @param hrefLabel
-     * @param internaLabel
      */
-    private void extractLinksForSendback(String parsedHtml, List<String> hrefLabel, String internaLabel) {
+    private void extractLinksForSendbackThatMatchKeys(LinkedList<String> keys, String parsedHtml, String internalLabel) {
 
+        Map<String, String> links = htmlParser.extractLinks(curPageBaseUrl, parsedHtml);
+
+        for (Map.Entry<String, String> entry : links.entrySet()) {
+            String curLinkLabel = entry.getKey();
+            if (!keys.contains(curLinkLabel.toLowerCase())) {
+                continue;
+            }
+            String url = entry.getValue();
+            if (!trackSentBackLinks.contains(curLinkLabel)) {
+                String[] strHolder = {curEntryKey, url, internalLabel, null};
+                threadCommunication.addToSendbackDataHolder(strHolder);
+                trackSentBackLinks.add(curLinkLabel);
+            }
+        }
     }
 
 }

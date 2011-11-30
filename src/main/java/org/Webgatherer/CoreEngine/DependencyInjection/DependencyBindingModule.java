@@ -1,5 +1,7 @@
 package org.Webgatherer.CoreEngine.DependencyInjection;
 
+import org.Webgatherer.Controller.ControllerFlow;
+import org.Webgatherer.Controller.WorkflowControllerImpl_1;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGatherImpl;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParser;
@@ -11,8 +13,6 @@ import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainerI
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationImpl;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapper;
-import org.Webgatherer.CoreEngine.Controller.ControllerFlow;
-import org.Webgatherer.CoreEngine.Controller.WorkflowControllerImpl_1;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapperImpl_External;

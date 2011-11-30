@@ -5,6 +5,7 @@ import org.ardverk.collection.Trie;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * @author Rick Dane
@@ -14,6 +15,8 @@ public interface DataHolder {
     public StatusIndicator addEmailAddress(String email);
 
     public StatusIndicator checkIfContainerAvailable(String identifier);
+
+    public Queue<String> destroyRetrieveFinalData();
 
     public ContainerBase getContainerByIdentifier(String identifier);
 

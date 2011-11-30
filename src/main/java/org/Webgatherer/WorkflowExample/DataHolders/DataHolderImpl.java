@@ -56,7 +56,7 @@ public class DataHolderImpl implements DataHolder {
         if (cb == null) {
             return StatusIndicator.DOESNOTEXIST;
         }
-        if (cb.isLocked()) {
+        if (cb.isUnLocked()) {
             return StatusIndicator.NOTAVAILABLE;
         }
         return StatusIndicator.AVAILABLE;
@@ -70,7 +70,7 @@ public class DataHolderImpl implements DataHolder {
      */
     public ContainerBase getContainerByIdentifier(String identifier) {
         ContainerBase cb = containerHolder.get(identifier);
-        if (cb == null || cb.isLocked()) {
+        if (cb == null || cb.isUnLocked()) {
             return null;
         }
         return cb;
@@ -95,11 +95,10 @@ public class DataHolderImpl implements DataHolder {
         if (cb == null) {
             return StatusIndicator.DOESNOTEXIST;
         }
-        if (cb.isLocked()) {
+        if (cb.isUnLocked()) {
             return StatusIndicator.NOTAVAILABLE;
         }
-        cb.addContent(entry);
-        StatusIndicator status = cb.incrementAttempts();
+        StatusIndicator status = cb.addContent(entry);
         if (status == StatusIndicator.JUSTUNLOCKED) {
             finishedContainerKeys.add(identifier);
         }
@@ -112,6 +111,17 @@ public class DataHolderImpl implements DataHolder {
         if (status == StatusIndicator.JUSTUNLOCKED) {
             finishedContainerKeys.add(identifier);
         }
+    }
+
+    /**
+     * This should only be called when the thread is ready to be destroyed (all pages have been visited), generally its good practice
+     * to make sure there has been a delay of at least a few seconds without any new pages coming into the workflow queue before calling this,
+     * it gives the remaining data to the workflow that never reached its max number of attempts
+     * @return
+     */
+    public Queue<String> destroyRetrieveFinalData () {
+        //TODO implement this
+        return null;
     }
 
 }

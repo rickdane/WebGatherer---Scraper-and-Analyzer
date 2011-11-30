@@ -1,9 +1,10 @@
-package org.Webgatherer.CoreEngine.Controller;
+package org.Webgatherer.Controller;
 
 import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 
 import java.util.*;
 
@@ -39,22 +40,22 @@ public class ExampleRun {
     }
 
     private static void testPrintResults(FinalOutputContainer finalOutputContainer) {
-        int THREAD_SLEEP = 1000;
+        int THREAD_SLEEP = 5000;
         int LIST_FIRST_ITEM = 0;
 
         while (true) {
-            List outputList;
+            Map <String, ContainerBase> outputMap = null;
             try {
-                outputList = finalOutputContainer.removeFromFinalOutputContainer();
+                outputMap = finalOutputContainer.removeFromFinalOutputContainer();
             } catch (Exception e) {
                 continue;
             }
-            if (outputList == null || outputList.isEmpty()) {
+            if (outputMap == null || outputMap.isEmpty()) {
                 continue;
             }
 
-            String outputStr = (String) outputList.get(LIST_FIRST_ITEM);
-            System.out.println(outputStr);
+            ContainerBase outputContainer =  outputMap.get("site1");
+            System.out.println(outputContainer.getEntries()[0]);
             try {
                 Thread.sleep(THREAD_SLEEP);
             } catch (InterruptedException e) {
@@ -68,13 +69,11 @@ public class ExampleRun {
         Queue<String[]> pageQueue = new LinkedList<String[]>();
 
 
-        String[] site1 = {"espn.com", "http://espn.com"};
-        String[] site2 = {"reddit.com", "http://reddit.com"};
-        String[] site3 = {"tumblr.com", "http://tumblr.com"};
+        String[] site1 = {"site1", "", null, null};
+
 
         pageQueue.add(site1);
-        pageQueue.add(site2);
-        pageQueue.add(site3);
+
         return pageQueue;
     }
 

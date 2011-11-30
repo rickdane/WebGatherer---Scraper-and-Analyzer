@@ -1,23 +1,24 @@
 package org.Webgatherer.CoreEngine.Core.ThreadCommunication;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
+
+import java.util.*;
 
 /**
  * @author Rick Dane
  */
 public class FinalOutputContainerImpl implements FinalOutputContainer {
 
-    private volatile Queue<List> finalOutputContainer = new LinkedList<List>();
+    private volatile Queue<Map<String,ContainerBase>> finalOutputContainer = new LinkedList<Map<String,ContainerBase>>();
 
-    public void addToFinalOutputContainer(List addList) {
-
-        finalOutputContainer.add(addList);
+    public void addToFinalOutputContainer(String identifier, ContainerBase cb) {
+        Map <String, ContainerBase> map = new HashMap<String, ContainerBase>();
+        map.put(identifier,cb);
+        finalOutputContainer.add(map);
 
     }
 
-    public List removeFromFinalOutputContainer() {
+    public Map<String,ContainerBase> removeFromFinalOutputContainer() {
         if (!finalOutputContainer.isEmpty()) {
             try {
                 return finalOutputContainer.remove();

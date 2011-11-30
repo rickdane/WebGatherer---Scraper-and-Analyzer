@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.htmlcleaner.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,16 +22,16 @@ public class HtmlParserImpl implements HtmlParser {
         htmlCleanerProperties = htmlCleaner.getProperties();
     }
 
-    public List<String> extractLinks(String htmlPage) {
+    public Map<String, String> extractLinks(String baseUrl, String htmlPage) {
         TagNode node = htmlCleaner.clean(htmlPage);
 
         TagNode[] nodesHref = node.getElementsByName("a", true);
-        List<String> urlList = new ArrayList<String>();
+        Map<String, String>  urlList = new HashMap<String, String>();
 
         for (TagNode curNode : nodesHref) {
             Map<String, String> attributes = curNode.getAttributes();
             if (attributes.containsKey("href")) {
-                urlList.add(curNode.getText().toString());
+                urlList.put(curNode.getText().toString().toLowerCase().trim(), baseUrl + curNode.getAttributeByName("href").trim());
                 //urlList.add(attributes.get("href"));
             }
         }
