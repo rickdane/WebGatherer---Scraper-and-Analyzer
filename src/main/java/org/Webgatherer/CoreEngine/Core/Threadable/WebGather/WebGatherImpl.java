@@ -62,23 +62,36 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
                         break;
                     }
                 }
+
                 if (threadCommunication.isPageQueueEmpty()) {
-                    if (selfTerminate > SELF_TERMINATE_COUNT) {
+                    if (determineWhetherBreakLoop()) {
                         break;
                     }
-                    try {
-                        Thread.sleep(THREAD_SLEEP_LONGER);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    selfTerminate++;
                 }
             } else {
                 i++;
             }
         }
+
+        System.out.println("Workflow - WebGather Destroyed");
     }
 
+    private boolean determineWhetherBreakLoop() {
+
+        if (emptyLoopCycles > maxEmptyLoopCycles) {
+            return true;
+        } else {
+
+            emptyLoopCycles++;
+
+            try {
+                Thread.sleep(THREAD_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 
     public boolean isDummy() {
         return false;  //To change body of implemented methods use File | Settings | File Templates.

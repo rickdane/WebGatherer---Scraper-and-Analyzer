@@ -29,4 +29,12 @@ public abstract class WorkflowBase {
 
     }
 
+    /**
+     * Leave blank, its not specifically needed so we don't make it abstract but leave the option for a workflow to implement
+     * a destroy method, if needed
+     */
+    public void destroyCleanly () {
+
+    }
+
 }

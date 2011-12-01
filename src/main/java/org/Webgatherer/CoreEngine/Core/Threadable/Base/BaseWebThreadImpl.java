@@ -20,6 +20,8 @@ public abstract class BaseWebThreadImpl extends Thread implements BaseWebThread 
     protected final int THREAD_SLEEP = 500;
     protected final int THREAD_SLEEP_LONGER = 10000;
     protected final int SELF_TERMINATE_COUNT = 10;
+        protected int emptyLoopCycles = 0;
+    protected int maxEmptyLoopCycles = 10;
 
 
     public void configure(ThreadCommunication threadCommunication, String workflowId, FinalOutputContainer finalOutputContainer) {

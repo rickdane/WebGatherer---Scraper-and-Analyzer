@@ -29,15 +29,13 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
     public void runQueue() {
 
         int i = 1;
-        int selfTerminate = 1;
         while (threadCommunication.shouldBeRunning()) {
 
             if (threadCommunication.isPageQueueEmpty()) {
-                try {
-                    Thread.sleep(THREAD_SLEEP);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (determineWhetherBreakLoop()) {
+                    break;
                 }
+
             } else {
 
                 Map<String, Object> workflowParams = new HashMap<String, Object>();
@@ -56,15 +54,10 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
                         }
                     }
                     if (threadCommunication.isPageQueueEmpty()) {
-                        if (selfTerminate > SELF_TERMINATE_COUNT) {
+                        if (determineWhetherBreakLoop()) {
                             break;
                         }
-                        try {
-                            Thread.sleep(THREAD_SLEEP_LONGER);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        selfTerminate++;
+
                     }
                 } else {
                     i++;
@@ -72,6 +65,25 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
             }
         }
 
+        //the "main loop" for this thread has finished, so we need to run the destroy method on the workflow as it may have state data that needs to be released
+        workflowWrapper.cleanDestroyWorkflow(workflowId);
+    }
+
+    private boolean determineWhetherBreakLoop() {
+
+        if (emptyLoopCycles > maxEmptyLoopCycles) {
+            return true;
+        } else {
+
+            emptyLoopCycles++;
+
+            try {
+                Thread.sleep(THREAD_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public boolean isDummy() {

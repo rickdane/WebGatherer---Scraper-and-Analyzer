@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Rick Dane
  */
-public class WorfkflowWrapperImpl_Reflection implements WorkflowWrapper {
+public class WorfkflowWrapperImpl_Reflection {
 
     private Provider <HtmlCleaner> htmlCleanerProvider;
 

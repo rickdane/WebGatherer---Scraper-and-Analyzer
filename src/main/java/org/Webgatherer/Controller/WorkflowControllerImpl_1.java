@@ -29,6 +29,10 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     private Provider<WebGather> webGatherProvider;
     private Map<String, Object> parameterMap;
 
+    private final int MAX_SLEEPS = 1000;
+    private int sleepCount = 0;
+    private final int SLEEP_LENGTH = 10;
+
     @Inject
     public WorkflowControllerImpl_1(Provider<ThreadCommunication> threadCommunicationProvider, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, Provider<WebGather> webGatherProvider,
                                     Provider<DataInterpretor> dataInterpretorProvider) {
@@ -39,7 +43,7 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
         this.webGatherProvider = webGatherProvider;
     }
 
-    public void configure(FinalOutputContainer finalOutputContainer,List<String> workflowList, Map<String, Object> parameterMap) {
+    public void configure(FinalOutputContainer finalOutputContainer, List<String> workflowList, Map<String, Object> parameterMap) {
         this.finalOutputContainer = finalOutputContainer;
         this.parameterMap = parameterMap;
         this.workflowList = workflowList;
@@ -48,7 +52,7 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     public void run() {
 
         launchScraperThread("googleScrape", parameterMap, workflowList.get(0), 1, true);
-        launchDataProcessorThread("dataProcess1",parameterMap, workflowList.get(1), 1);
+        launchDataProcessorThread("dataProcess1", parameterMap, workflowList.get(1), 1);
 
         autoRunFlow();
     }
@@ -58,24 +62,17 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
      */
     private void autoRunFlow() {
 
+
         int sizeThreadTrackMin1 = threadTrackerOrder.size() - 1;
-        while (true) {
+        while (sleepCount < MAX_SLEEPS) {
             int i = 0;
+            int emptyCount = 0;
+
             for (String curKey : threadTrackerOrder) {
                 ThreadCommunication curThreadComm = threadTracker.get(curKey);
 
-                int emptyCnt = 0;
-
-                if (curThreadComm.isOutputDataHolderEmpty() && curThreadComm.isSendbackDataHolderEmpty()) {
-                    if (emptyCnt == threadTrackerOrder.size() - 1) {
-                        break;
-                    }
-                    if (curThreadComm.isPageQueueEmpty()) {
-                        emptyCnt = emptyCnt++;
-                    }
-
-                }
                 while (!curThreadComm.isOutputDataHolderEmpty() || !curThreadComm.isSendbackDataHolderEmpty()) {
+                    sleepCount = 0;
 
                     if (i != sizeThreadTrackMin1 && !curThreadComm.isOutputDataHolderEmpty()) {
                         String[] curStr = curThreadComm.getFromOutputDataHolder();
@@ -88,14 +85,30 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
                         prevThreadComm.addToPageQueue(curStr);
                     }
                 }
+
                 if (i == sizeThreadTrackMin1) {
                     i = 0;
 
                 } else {
                     i++;
                 }
+
+                if (curThreadComm.isOutputDataHolderEmpty() && curThreadComm.isSendbackDataHolderEmpty()) {
+                    emptyCount++;
+                }
+
+                if (emptyCount >= sizeThreadTrackMin1) {
+                    try {
+                        Thread.sleep(SLEEP_LENGTH);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    sleepCount++;
+                }
+
             }
         }
+        System.out.println("AutoRun Worfklow - Successfully Destroyed");
     }
 
 

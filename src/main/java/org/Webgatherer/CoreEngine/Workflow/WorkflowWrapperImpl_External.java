@@ -12,6 +12,7 @@ public class WorkflowWrapperImpl_External implements WorkflowWrapper {
 
     private final String EXTERNAL_WORKFLOW_PROVIDER = "org.Webgatherer.WorkflowExample.Provider.WorkflowProvider";
     private final String EXTERNAL_WORKFLOW_PROVIDER_METHOD = "runWorfklow";
+    private final String EXTERNAL_WORKFLOW_DESTROY_METHOD = "destroyWorkflowCleanly";
     private final String CLASSPATH = "";
     private Object externalWorkflowProvider;
 
@@ -43,13 +44,38 @@ public class WorkflowWrapperImpl_External implements WorkflowWrapper {
         return true;
     }
 
+    public boolean cleanDestroyWorkflow(String classPath) {
+        Method method = null;
+        Class[] parameter = new Class[1];
+        parameter[0] = String.class;
+        try {
+            method = externalWorkflowProvider.getClass().getDeclaredMethod(EXTERNAL_WORKFLOW_DESTROY_METHOD, parameter);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        try {
+             Object[] args = {classPath};
+            if (method != null) {
+                method.invoke(externalWorkflowProvider, args);
+            }
+        } catch (Exception e) {
+            System.out.println("Reflection failed - error during attempt to destroy workflow");
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     private void initiateProvider() {
 
         try {
             externalWorkflowProvider = Class.forName(EXTERNAL_WORKFLOW_PROVIDER).newInstance();
 
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
     }
+
+
 }

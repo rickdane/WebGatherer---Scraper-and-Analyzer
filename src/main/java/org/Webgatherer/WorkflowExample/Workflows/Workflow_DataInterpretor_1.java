@@ -33,10 +33,17 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
     private FinalOutputContainer finalOutputContainer;
     private ThreadCommunication threadCommunication;
 
+    private final int CONTAINER_DEFAULT_MAX_ENTRIES = 1;
+    private final int CONTAINER_DEFAULT_MAX_ATTEMPTS = 1;
+
     private List<String> trackSentBackLinks = new ArrayList<String>();
     //TODO DI
 
     HtmlParser htmlParser;
+
+    private enum PageQueueEntries {
+        KEY, BASE_URL, CATEGORY, SCRAPED_PAGE;
+    }
 
     public Workflow_DataInterpretor_1(Injector injector) {
         super(injector);
@@ -53,18 +60,17 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
 
         String[] curEntry = threadCommunication.getFromPageQueue();
 
-        curEntryKey = curEntry[0];
-        String curScrapedPage = curEntry[3];
+        curEntryKey = curEntry[PageQueueEntries.KEY.ordinal()];
+        String curScrapedPage = curEntry[PageQueueEntries.SCRAPED_PAGE.ordinal()];
         curPageBaseUrl = null;
 
-        String curCategory = curEntry[2];
-        curPageBaseUrl = curEntry[1];
-
+        String curCategory = curEntry[PageQueueEntries.CATEGORY.ordinal()];
+        curPageBaseUrl = curEntry[PageQueueEntries.BASE_URL.ordinal()];
 
         dataHolder = trie.get(curEntryKey);
         if (dataHolder == null) {
             dataHolder = new DataHolderImpl();
-            dataHolder.createContainer("aboutus", 1, 1);
+            dataHolder.createContainer("aboutus", CONTAINER_DEFAULT_MAX_ENTRIES, CONTAINER_DEFAULT_MAX_ATTEMPTS);
             trie.put(curEntryKey, dataHolder);
         }
 
@@ -77,10 +83,7 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
 
         //move any finished containers to the finished queue
         if (!dataHolder.isFinishedContainerQueueEmpty()) {
-            while (!dataHolder.isFinishedContainerQueueEmpty()) {
-                ContainerBase cb = dataHolder.pullFromFinishedContainerQueue();
-                finalOutputContainer.addToFinalOutputContainer(curEntryKey, cb);
-            }
+            addToFinalOutputContainer();
         }
 
         LinkedList<String> tokenstoCheckFor = new LinkedList<String>();
@@ -93,7 +96,7 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
     private void addPageToDataHolder(String label, String parsedHtml) {
         StatusIndicator status = dataHolder.checkIfContainerAvailable(label);
         if (status == StatusIndicator.DOESNOTEXIST) {
-            dataHolder.createContainer(label, 1, 20);
+            dataHolder.createContainer(label, CONTAINER_DEFAULT_MAX_ENTRIES, CONTAINER_DEFAULT_MAX_ATTEMPTS);
         }
         dataHolder.addEntryToContainer(label, parsedHtml);
     }
@@ -126,6 +129,19 @@ public class Workflow_DataInterpretor_1 extends WorkflowBase {
                 threadCommunication.addToSendbackDataHolder(strHolder);
                 trackSentBackLinks.add(curLinkLabel);
             }
+        }
+    }
+
+    @Override
+    public void destroyCleanly() {
+        dataHolder.destroyRetrieveFinalData();
+        addToFinalOutputContainer();
+    }
+
+    private void addToFinalOutputContainer() {
+        while (!dataHolder.isFinishedContainerQueueEmpty()) {
+            ContainerBase cb = dataHolder.pullFromFinishedContainerQueue();
+            finalOutputContainer.addToFinalOutputContainer(curEntryKey + "." + cb.getIdentifier(), cb);
         }
     }
 

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Rick Dane
  */
-public class WorkflowWrapperImpl implements WorkflowWrapper {
+public class WorkflowWrapperImpl {
 
     /**
      * Creates, runs and disposes of workflow session, returns false if the workflow did not run properly

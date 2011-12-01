@@ -16,7 +16,7 @@ public interface DataHolder {
 
     public StatusIndicator checkIfContainerAvailable(String identifier);
 
-    public Queue<String> destroyRetrieveFinalData();
+    void destroyRetrieveFinalData();
 
     public ContainerBase getContainerByIdentifier(String identifier);
 

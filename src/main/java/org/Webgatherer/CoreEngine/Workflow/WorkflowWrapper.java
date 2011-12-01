@@ -8,4 +8,6 @@ import java.util.Map;
 public interface WorkflowWrapper {
 
     public boolean runWorfklow (String processName, Map<String, Object>  workflowParams);
+
+    public boolean cleanDestroyWorkflow(String classPath);
 }

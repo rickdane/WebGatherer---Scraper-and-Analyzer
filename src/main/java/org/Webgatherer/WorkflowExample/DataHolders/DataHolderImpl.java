@@ -14,6 +14,7 @@ public class DataHolderImpl implements DataHolder {
 
     private Trie<String, String> emailAddresses = new PatriciaTrie<String, String>(StringKeyAnalyzer.INSTANCE);
     private Map<String, ContainerBase> containerHolder = new HashMap<String, ContainerBase>();
+    private Trie<String, String> internalFinishedKeyTracker = new PatriciaTrie<String, String>(StringKeyAnalyzer.INSTANCE);
     private Queue<String> finishedContainerKeys = new LinkedList<String>();
 
     private int maxEmailAddresses;
@@ -101,6 +102,7 @@ public class DataHolderImpl implements DataHolder {
         StatusIndicator status = cb.addContent(entry);
         if (status == StatusIndicator.JUSTUNLOCKED) {
             finishedContainerKeys.add(identifier);
+            internalFinishedKeyTracker.put(identifier, null);
         }
         return StatusIndicator.SUCCESS;
     }
@@ -110,6 +112,7 @@ public class DataHolderImpl implements DataHolder {
         StatusIndicator status = cb.incrementAttempts();
         if (status == StatusIndicator.JUSTUNLOCKED) {
             finishedContainerKeys.add(identifier);
+            internalFinishedKeyTracker.put(identifier, null);
         }
     }
 
@@ -117,11 +120,19 @@ public class DataHolderImpl implements DataHolder {
      * This should only be called when the thread is ready to be destroyed (all pages have been visited), generally its good practice
      * to make sure there has been a delay of at least a few seconds without any new pages coming into the workflow queue before calling this,
      * it gives the remaining data to the workflow that never reached its max number of attempts
+     *
      * @return
      */
-    public Queue<String> destroyRetrieveFinalData () {
-        //TODO implement this
-        return null;
+    public void destroyRetrieveFinalData() {
+        for (Map.Entry<String, ContainerBase> curEntry : containerHolder.entrySet()) {
+            String id = curEntry.getKey();
+            ContainerBase cb = curEntry.getValue();
+            if (!internalFinishedKeyTracker.containsKey(id)) {
+                cb.forceUnlock();
+                finishedContainerKeys.add(id);
+                internalFinishedKeyTracker.put(id, null);
+            }
+        }
     }
 
 }

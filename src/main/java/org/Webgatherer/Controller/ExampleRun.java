@@ -40,27 +40,37 @@ public class ExampleRun {
     }
 
     private static void testPrintResults(FinalOutputContainer finalOutputContainer) {
-        int THREAD_SLEEP = 5000;
+        int THREAD_SLEEP = 15000;
         int LIST_FIRST_ITEM = 0;
 
         while (true) {
-            Map <String, ContainerBase> outputMap = null;
+            Map<String, ContainerBase> outputMap = null;
             try {
                 outputMap = finalOutputContainer.removeFromFinalOutputContainer();
             } catch (Exception e) {
+
+                try {
+                    Thread.sleep(THREAD_SLEEP);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
                 continue;
             }
             if (outputMap == null || outputMap.isEmpty()) {
+                try {
+                    Thread.sleep(THREAD_SLEEP);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 continue;
             }
 
-            ContainerBase outputContainer =  outputMap.get("site1");
-            System.out.println(outputContainer.getEntries()[0]);
-            try {
-                Thread.sleep(THREAD_SLEEP);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            ContainerBase outputContainer = outputMap.get("site1.aboutus");
+            LinkedList<String> list = outputContainer.getEntries();
+            System.out.println(list.get(0));
+
+            break;
+
         }
     }
 
@@ -69,7 +79,7 @@ public class ExampleRun {
         Queue<String[]> pageQueue = new LinkedList<String[]>();
 
 
-        String[] site1 = {"site1", "", null, null};
+        String[] site1 = {"", null, null};
 
 
         pageQueue.add(site1);

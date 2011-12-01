@@ -15,6 +15,8 @@ import java.util.Map;
 public class WorkflowProvider {
     private Injector injector;
     private final String WORKFLOW_METHOD = "runWorkflow";
+    private final String WORKFLOW_DESTROY_METHOD = "destroyCleanly";
+
     private Map<String, Object> workflowObjectInstances = new HashMap<String, Object>();
 
     public WorkflowProvider() {
@@ -50,11 +52,32 @@ public class WorkflowProvider {
         }
     }
 
+    public void destroyWorkflowCleanly(String classPath) {
+        Object workflowObject = workflowObjectInstances.get(classPath);
+        if (workflowObject == null) {
+            workflowObject = initiateObject(classPath);
+        }
+
+        Method method = null;
+        try {
+            method = workflowObject.getClass().getDeclaredMethod(WORKFLOW_DESTROY_METHOD);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        try {
+            method.invoke(workflowObject);
+            System.out.println("Workflow successfully destroyed");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Reflection failed during destroy of Workflow");
+        }
+    }
+
     private Object initiateObject(String classPath) {
 
         Object object = null;
         try {
-            Class[] constructorArgs = new Class[] { Injector.class};
+            Class[] constructorArgs = new Class[]{Injector.class};
             Object[] args = {injector};
             Constructor constructor = Class.forName(classPath).getConstructor(constructorArgs);
             object = constructor.newInstance(args);
