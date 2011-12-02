@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Rick Dane
@@ -41,11 +43,6 @@ public class HtmlParserImpl implements HtmlParser {
         TagNode node = htmlCleaner.clean(htmlPage);
         StringBuffer stringBuffer = node.getText();
         return stringBuffer.toString();
-    }
-
-    public List<String> extractEmailAddresses(String htmlPage) {
-
-        return null;
     }
 
     private void defaultConfigHtmlCleaner() {

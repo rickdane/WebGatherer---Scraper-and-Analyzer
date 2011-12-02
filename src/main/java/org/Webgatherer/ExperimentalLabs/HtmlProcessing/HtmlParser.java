@@ -12,5 +12,4 @@ public interface HtmlParser {
 
     public String getText(String htmlPage);
 
-    public List<String> extractEmailAddresses(String htmlPage);
 }

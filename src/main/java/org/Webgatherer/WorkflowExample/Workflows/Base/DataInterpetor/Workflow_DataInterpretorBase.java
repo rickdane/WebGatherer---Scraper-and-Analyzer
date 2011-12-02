@@ -44,6 +44,8 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
         super(injector);
     }
 
+    protected abstract Map <String,int[]> prepareInitParams ();
+
     protected void setUp(Map<String, Object> workflowParams) {
         threadCommunication = (ThreadCommunication) workflowParams.get("threadCommunication");
         finalOutputContainer = (FinalOutputContainer) workflowParams.get("finalOutputContainer");
@@ -70,12 +72,17 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
         }
     }
 
-    protected void initializeDataHolder(String[] containerNamesToCreate) {
+    protected void initializeDataHolder(Map<String, int[]> initParams) {
         dataHolder = trie.get(curEntryKey);
         if (dataHolder == null) {
             dataHolder = new DataHolderImpl();
-            for (String curName : containerNamesToCreate) {
-                dataHolder.createContainer(curName, CONTAINER_DEFAULT_MAX_ENTRIES, CONTAINER_DEFAULT_MAX_ATTEMPTS);
+            for (Map.Entry<String, int[]> curEntry : initParams.entrySet()) {
+
+                int[] numbers = curEntry.getValue();
+                int containerDefaultMaxEntries = numbers[0];
+                int containerDefaultMaxAttempts = numbers[1];
+
+                dataHolder.createContainer(curEntry.getKey(), containerDefaultMaxEntries, containerDefaultMaxAttempts);
             }
             trie.put(curEntryKey, dataHolder);
         }

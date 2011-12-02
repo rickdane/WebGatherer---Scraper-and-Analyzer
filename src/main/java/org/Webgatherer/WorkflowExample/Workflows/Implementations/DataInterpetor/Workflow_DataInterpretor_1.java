@@ -27,9 +27,10 @@ public final class Workflow_DataInterpretor_1 extends Workflow_DataInterpretorBa
         htmlParser = new HtmlParserImpl(htmlCleaner);
         textExtraction = injector.getInstance(TextExtraction.class);
         htmlCleanerProvider = injector.getProvider(HtmlCleaner.class);
-        String[] containerNamesToCreate = {""};
-        initializeDataHolder(containerNamesToCreate);
+
+        initializeDataHolder(prepareInitParams());
     }
+
 
     @Override
     public void runWorkflow(Map<String, Object> workflowParams) {
@@ -63,4 +64,13 @@ public final class Workflow_DataInterpretor_1 extends Workflow_DataInterpretorBa
         textExtraction.extractLinksForSendbackThatMatchKeys(this, tokenstoCheckFor, curScrapedPage, "aboutus");
     }
 
+    protected Map<String, int[]> prepareInitParams() {
+        Map<String, int[]> initParams = new HashMap<String, int[]>();
+        int[] one = {1, 2};
+        initParams.put("aboutus", one);
+
+        int[] two = {5, 25};
+        initParams.put("email", two);
+        return initParams;
+    }
 }

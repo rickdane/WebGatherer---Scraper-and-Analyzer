@@ -78,9 +78,7 @@ public class ExampleRun {
 
         Queue<String[]> pageQueue = new LinkedList<String[]>();
 
-
         String[] site1 = {"site1", "", null, null};
-
 
         pageQueue.add(site1);
 
