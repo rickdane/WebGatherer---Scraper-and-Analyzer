@@ -1,10 +1,10 @@
-package org.Webgatherer.WorkflowExample.Workflows;
+package org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer;
 
 import com.google.inject.Injector;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
-import org.Webgatherer.WorkflowExample.Workflows.Base.WorkflowBase;
+import org.Webgatherer.WorkflowExample.Workflows.Base.Common.WorkflowBase;
 
 import java.util.Map;
 

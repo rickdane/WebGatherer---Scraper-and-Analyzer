@@ -26,16 +26,14 @@ public class HtmlParserImpl implements HtmlParser {
         TagNode node = htmlCleaner.clean(htmlPage);
 
         TagNode[] nodesHref = node.getElementsByName("a", true);
-        Map<String, String>  urlList = new HashMap<String, String>();
+        Map<String, String> urlList = new HashMap<String, String>();
 
         for (TagNode curNode : nodesHref) {
             Map<String, String> attributes = curNode.getAttributes();
             if (attributes.containsKey("href")) {
                 urlList.put(curNode.getText().toString().toLowerCase().trim(), baseUrl + curNode.getAttributeByName("href").trim());
-                //urlList.add(attributes.get("href"));
             }
         }
-
         return urlList;
     }
 
@@ -46,7 +44,8 @@ public class HtmlParserImpl implements HtmlParser {
     }
 
     public List<String> extractEmailAddresses(String htmlPage) {
-          return null;
+
+        return null;
     }
 
     private void defaultConfigHtmlCleaner() {

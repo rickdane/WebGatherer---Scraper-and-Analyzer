@@ -12,23 +12,10 @@ import java.util.*;
  */
 public class DataHolderImpl implements DataHolder {
 
-    private Trie<String, String> emailAddresses = new PatriciaTrie<String, String>(StringKeyAnalyzer.INSTANCE);
     private Map<String, ContainerBase> containerHolder = new HashMap<String, ContainerBase>();
     private Trie<String, String> internalFinishedKeyTracker = new PatriciaTrie<String, String>(StringKeyAnalyzer.INSTANCE);
     private Queue<String> finishedContainerKeys = new LinkedList<String>();
-
-    private int maxEmailAddresses;
     private Map<String, Integer> contentTypesMap = new HashMap<String, Integer>();
-
-
-    public StatusIndicator addEmailAddress(String email) {
-        emailAddresses.put(email, null);
-        if (emailAddresses.selectKey(email) != null) {
-            return StatusIndicator.ALREADYEXISTS;
-        }
-        emailAddresses.put(email, null);
-        return StatusIndicator.SUCCESS;
-    }
 
     public boolean isFinishedContainerQueueEmpty() {
         return finishedContainerKeys.isEmpty();
@@ -77,9 +64,6 @@ public class DataHolderImpl implements DataHolder {
         return cb;
     }
 
-    public Trie<String, String> getEmailAddresses() {
-        return emailAddresses;
-    }
 
     public StatusIndicator createContainer(String identifier, int maxEntries, int maxAttempts) {
         if (containerHolder.containsKey(identifier)) {

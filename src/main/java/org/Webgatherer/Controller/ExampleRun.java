@@ -19,7 +19,7 @@ public class ExampleRun {
         Injector injector = Guice.createInjector(new DependencyBindingModule());
 
         ControllerFlow wfContrl = injector.getInstance(ControllerFlow.class);
-        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, "org.Webgatherer.WorkflowExample.Workflows.Workflow_WebGather_1", "org.Webgatherer.WorkflowExample.Workflows.Workflow_DataInterpretor_1");
+        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, "org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.Workflow_WebGather_1", "org.Webgatherer.WorkflowExample.Workflows.Implementations.DataInterpetor.Workflow_DataInterpretor_1");
 
         testPrintResults(finalOutputContainer);
     }
@@ -79,7 +79,7 @@ public class ExampleRun {
         Queue<String[]> pageQueue = new LinkedList<String[]>();
 
 
-        String[] site1 = {"", null, null};
+        String[] site1 = {"site1", "", null, null};
 
 
         pageQueue.add(site1);

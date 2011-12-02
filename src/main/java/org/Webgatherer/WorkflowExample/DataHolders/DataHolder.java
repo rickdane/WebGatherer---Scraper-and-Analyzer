@@ -12,15 +12,11 @@ import java.util.Queue;
  */
 public interface DataHolder {
 
-    public StatusIndicator addEmailAddress(String email);
-
     public StatusIndicator checkIfContainerAvailable(String identifier);
 
     void destroyRetrieveFinalData();
 
     public ContainerBase getContainerByIdentifier(String identifier);
-
-    public Trie<String, String> getEmailAddresses();
 
     public StatusIndicator createContainer(String identifier, int maxEntries, int maxAttempts);
 
