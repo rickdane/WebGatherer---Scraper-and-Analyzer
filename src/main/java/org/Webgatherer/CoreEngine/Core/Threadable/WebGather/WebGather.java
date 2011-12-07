@@ -13,9 +13,11 @@ public interface WebGather extends BaseWebThread {
 
     public void runQueue();
 
-    public void retrievePageFromUrl(String[] string);
+    public void retrievePageFromUrl(String[] string,  int retrieveType);
 
-    public void configure(WebDriver driver, Wait<WebDriver> wait, ThreadCommunication threadCommunication,String workflowId, FinalOutputContainer finalOutputContainer);
+    public void configure(WebDriver driver, Wait<WebDriver> wait, ThreadCommunication threadCommunication, String workflowId, FinalOutputContainer finalOutputContainer);
 
+    public WebDriver getDriver();
 
+    public WebDriver getNewWebDriver();
 }

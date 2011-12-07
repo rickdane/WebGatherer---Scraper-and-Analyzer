@@ -4,6 +4,8 @@ import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.Webgatherer.Utility.ReadFiles;
+import org.Webgatherer.Utility.TextCleaner;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 
 import java.util.*;
@@ -12,7 +14,7 @@ import java.util.*;
 /**
  * @author Rick Dane
  */
-public class ExampleRun {
+public class ExampleRun_WebPagesScrape {
 
     public static void main(String[] args) {
 
@@ -30,7 +32,7 @@ public class ExampleRun {
         workflowlist.add(workflow3);
 
         Map<String, Object> parameterMap = new HashMap<String, Object>();
-        parameterMap.put("pageQueue", testLoadPages());
+        parameterMap.put("pageQueue", PreparePageQueue());
 
         FinalOutputContainer finalOutputContainer = injector.getInstance(FinalOutputContainer.class);
 
@@ -40,8 +42,10 @@ public class ExampleRun {
     }
 
     private static void testPrintResults(FinalOutputContainer finalOutputContainer) {
-        int THREAD_SLEEP = 15000;
+        int THREAD_SLEEP = 2000;
         int LIST_FIRST_ITEM = 0;
+        int killCount = 1000000;
+        int countKilledSoFar = 0;
 
         while (true) {
             Map<String, ContainerBase> outputMap = null;
@@ -65,22 +69,45 @@ public class ExampleRun {
                 continue;
             }
 
-            ContainerBase outputContainer = outputMap.get("site1.aboutus");
-            LinkedList<String> list = outputContainer.getEntries();
-            System.out.println(list.get(0));
+            ContainerBase outputContainer = null;
+            for (Map.Entry<String, ContainerBase> entries : outputMap.entrySet()) {
+                String key = entries.getKey();
+                outputContainer = outputMap.get(key);
 
-            break;
+                LinkedList<String> list = outputContainer.getEntries();
 
+                System.out.print("\n " + key + " ,");
+                System.out.print(outputContainer.getIdentifier() + " ,");
+                for (String curStr : list) {
+                    System.out.print(curStr + ",");
+                }
+
+                countKilledSoFar++;
+                break;
+            }
+
+
+            if (countKilledSoFar == killCount) {
+                break;
+            }
         }
     }
 
-    private static Queue testLoadPages() {
+    private static Queue PreparePageQueue() {
 
         Queue<String[]> pageQueue = new LinkedList<String[]>();
 
-        String[] site1 = {"site1", "", null, null};
+        TextCleaner textCleaner = new TextCleaner();
 
-        pageQueue.add(site1);
+        ReadFiles readFiles = new ReadFiles();
+        List<String> rawUrls = readFiles.readLinesToList("/home/user/Dropbox/Rick/WebGatherer/Persistence/career/scraped_urls/testurls");
+
+        for (String curUrl : rawUrls) {
+            String[] site1 = {textCleaner.removeUrlPrefix(curUrl), curUrl, null, null};
+
+            pageQueue.add(site1);
+
+        }
 
         return pageQueue;
     }

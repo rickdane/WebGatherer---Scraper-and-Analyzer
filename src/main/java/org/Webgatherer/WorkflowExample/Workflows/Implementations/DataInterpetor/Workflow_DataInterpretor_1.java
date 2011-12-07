@@ -35,42 +35,52 @@ public final class Workflow_DataInterpretor_1 extends Workflow_DataInterpretorBa
     @Override
     public void runWorkflow(Map<String, Object> workflowParams) {
 
-        //TODO refactor this as it doesn't need to be called with each workflow iteration
-        setUp(workflowParams);
+        runWorkflowSetup(workflowParams);
 
-        String[] curEntry = threadCommunication.getFromPageQueue();
+        if (curScrapedPage != null) {
+            String[] checkFor1 = {"career", "job", "employment"};
+            checkForMatchesToSendBackLink(checkFor1, "careers");
 
-        curEntryKey = curEntry[PageQueueEntries.KEY.ordinal()];
-        String curScrapedPage = curEntry[PageQueueEntries.SCRAPED_PAGE.ordinal()];
-        curPageBaseUrl = null;
+            String[] checkFor3 = {"about us", "info"};
+            checkForMatchesToSendBackLink(checkFor3, "aboutus");
+        }
 
-        String curCategory = curEntry[PageQueueEntries.CATEGORY.ordinal()];
-        curPageBaseUrl = curEntry[PageQueueEntries.BASE_URL.ordinal()];
+        dataHolder = trie.get(curEntryKey);
 
+        if (curCategory != null && curCategory.equals("aboutus")) {
+            addPageToDataHolder("aboutus", curPageBaseUrl);
+        }
 
-        if (curCategory != null && curCategory.equals("aboutus") && dataHolder.checkIfContainerAvailable("aboutus") == StatusIndicator.AVAILABLE) {
-            addPageToDataHolder("aboutus", curScrapedPage);
+        if (curCategory != null && curCategory.equals("careers")) {
+            textExtraction.extractAllLinksFromSameSite(this, curScrapedPage, "java", curEntryKey);
+            if (curWebPageText.indexOf("java") >= 0) {
+                addPageToDataHolder("java", curPageBaseUrl);
+            }
 
         }
 
         //move any finished containers to the finished queue
-        if (!dataHolder.isFinishedContainerQueueEmpty()) {
+        if (dataHolder != null && !dataHolder.isFinishedContainerQueueEmpty()) {
             addToFinalOutputContainer();
         }
 
+    }
+
+    protected void checkForMatchesToSendBackLink(String[] matches, String label) {
         LinkedList<String> tokenstoCheckFor = new LinkedList<String>();
-        tokenstoCheckFor.add("about us");
-        tokenstoCheckFor.add("info");
-        textExtraction.extractLinksForSendbackThatMatchKeys(this, tokenstoCheckFor, curScrapedPage, "aboutus");
+        for (String curMatch : matches) {
+            tokenstoCheckFor.add(curMatch);
+        }
+        textExtraction.extractLinksForSendbackThatMatchKeys(this, tokenstoCheckFor, curScrapedPage, label, curEntryKey);
     }
 
     protected Map<String, int[]> prepareInitParams() {
         Map<String, int[]> initParams = new HashMap<String, int[]>();
-        int[] one = {1, 2};
+        int[] one = {1, 14};
         initParams.put("aboutus", one);
 
-        int[] two = {5, 25};
-        initParams.put("email", two);
+        int[] two = {1, 18};
+        initParams.put("careers", two);
         return initParams;
     }
 }

@@ -25,6 +25,6 @@ public class Workflow_WebGather_1 extends WorkflowBase {
 
         String[] curEntry = threadCommunication.getFromPageQueue();
 
-        webGather.retrievePageFromUrl(curEntry);
+        webGather.retrievePageFromUrl(curEntry, EnumUrlRetrieveOptions.HTMLPAGE.ordinal());
     }
 }

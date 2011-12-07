@@ -13,6 +13,10 @@ import java.util.Map;
  */
 public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterpretor {
 
+    protected final int THREAD_SLEEP = 3000;
+    protected int emptyLoopCycles = 0;
+    protected int maxEmptyLoopCycles = 55;
+
     @Inject
     public DataInterpretorImpl(WorkflowWrapper workflowWrapper) {
         this.workflowWrapper = workflowWrapper;
@@ -32,35 +36,25 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
         while (threadCommunication.shouldBeRunning()) {
 
             if (threadCommunication.isPageQueueEmpty()) {
+                if (threadCommunication.isWebGathererThreadFinished()) {
+                    break;
+                }
                 if (determineWhetherBreakLoop()) {
                     break;
                 }
 
             } else {
-
+                emptyLoopCycles = 0;
                 Map<String, Object> workflowParams = new HashMap<String, Object>();
                 workflowParams.put("dataInterpretor", this);
                 workflowParams.put("threadCommunication", threadCommunication);
                 workflowParams.put("finalOutputContainer", finalOutputContainer);
                 workflowWrapper.runWorfklow(workflowId, workflowParams);
 
-                if (i == threadCommunication.getCheckQuitInterval() || threadCommunication.isPageQueueEmpty()) {
-                    if (i == threadCommunication.getCheckQuitInterval()) {
-                        i = 1;
+                synchronized (threadCommunication.shouldBeRunning()) {
+                    if (!threadCommunication.shouldBeRunning().booleanValue()) {
+                        break;
                     }
-                    synchronized (threadCommunication.shouldBeRunning()) {
-                        if (!threadCommunication.shouldBeRunning().booleanValue()) {
-                            break;
-                        }
-                    }
-                    if (threadCommunication.isPageQueueEmpty()) {
-                        if (determineWhetherBreakLoop()) {
-                            break;
-                        }
-
-                    }
-                } else {
-                    i++;
                 }
             }
         }

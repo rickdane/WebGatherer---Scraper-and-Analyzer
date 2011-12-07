@@ -33,7 +33,19 @@ public class HtmlParserImpl implements HtmlParser {
         for (TagNode curNode : nodesHref) {
             Map<String, String> attributes = curNode.getAttributes();
             if (attributes.containsKey("href")) {
-                urlList.put(curNode.getText().toString().toLowerCase().trim(), baseUrl + curNode.getAttributeByName("href").trim());
+                String url = curNode.getAttributeByName("href").trim();
+                if (!url.contains("http") && !url.contains("www")) {
+                    int urlLength = baseUrl.length();
+                    String checkForSlash = baseUrl.substring(urlLength - 1, urlLength);
+                    if (!checkForSlash.equals("/") && url.indexOf("/") != 0) {
+                        url = "/" + url;
+                    }
+                    if (checkForSlash.equals("/") && url.indexOf("/") == 0) {
+                        url = url.substring(1, url.length());
+                    }
+                    url = baseUrl + url;
+                }
+                urlList.put(curNode.getText().toString().toLowerCase().trim(), url);
             }
         }
         return urlList;

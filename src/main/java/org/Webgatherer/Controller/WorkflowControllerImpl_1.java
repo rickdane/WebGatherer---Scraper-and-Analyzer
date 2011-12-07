@@ -29,9 +29,9 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     private Provider<WebGather> webGatherProvider;
     private Map<String, Object> parameterMap;
 
-    private final int MAX_SLEEPS = 1000;
+    private final int MAX_SLEEPS = 3000;
     private int sleepCount = 0;
-    private final int SLEEP_LENGTH = 10;
+    private final int SLEEP_LENGTH = 250;
 
     @Inject
     public WorkflowControllerImpl_1(Provider<ThreadCommunication> threadCommunicationProvider, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, Provider<WebGather> webGatherProvider,
@@ -62,7 +62,6 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
      */
     private void autoRunFlow() {
 
-
         int sizeThreadTrackMin1 = threadTrackerOrder.size() - 1;
         while (sleepCount < MAX_SLEEPS) {
             int i = 0;
@@ -76,8 +75,12 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
 
                     if (i != sizeThreadTrackMin1 && !curThreadComm.isOutputDataHolderEmpty()) {
                         String[] curStr = curThreadComm.getFromOutputDataHolder();
+
                         ThreadCommunication nextThreadComm = threadTracker.get(threadTrackerOrder.get(i + 1));
                         nextThreadComm.addToPageQueue(curStr);
+                        if (curThreadComm.isWebGathererThreadFinished()) {
+                            nextThreadComm.setIsWebGathererThreadFinished(true);
+                        }
                     }
                     if (i != 0 && !curThreadComm.isSendbackDataHolderEmpty()) {
                         String[] curStr = curThreadComm.getFromSendbackDataHolder();
@@ -105,7 +108,6 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
                     }
                     sleepCount++;
                 }
-
             }
         }
         System.out.println("AutoRun Worfklow - Successfully Destroyed");

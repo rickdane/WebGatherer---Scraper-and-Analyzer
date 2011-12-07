@@ -48,7 +48,6 @@ public class WorkflowProvider {
             method.invoke(workflowObject, workflowParams);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Reflection failed - error during execution in DependencyWrapper");
         }
     }
 

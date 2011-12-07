@@ -14,10 +14,11 @@ public interface ThreadCommunication {
 
     public boolean isOutputDataHolderEmpty();
 
-    public void setPageQueue (Queue pageQueue);
+    public void setPageQueue(Queue pageQueue);
 
     /**
      * the thread can check this to gracefully "shutdown" itself if set to false
+     *
      * @return
      */
     public Boolean shouldBeRunning();
@@ -34,25 +35,30 @@ public interface ThreadCommunication {
 
     public String[] getFromPageQueue();
 
-    public int getCheckQuitInterval ();
+    public int getCheckQuitInterval();
 
     public String[] getFromOutputDataHolder();
 
-    public void setCheckQuitInterval (int checkQuitInterval);
+    public void setCheckQuitInterval(int checkQuitInterval);
 
     /**
      * Sets an object into the local hashmap for storing custom objects, these objects are ONLY meant for use
      * within workflows as they are inherently error prone due to lack of generics
+     *
      * @param key
      * @param obj
      */
-    public void setCustomDataMapElement (String key, Object obj);
+    public void setCustomDataMapElement(String key, Object obj);
 
-    public Object getCustomDataMapElement (String key);
+    public Object getCustomDataMapElement(String key);
 
-    public Map<String, Object> getCustomDataMap ();
+    public Map<String, Object> getCustomDataMap();
 
-    public void setCustomDataMap (Map map);
+    public void setCustomDataMap(Map map);
 
-    public void addToPageQueue (String[] page);
+    public void addToPageQueue(String[] page);
+
+    public boolean isWebGathererThreadFinished();
+
+    public void setIsWebGathererThreadFinished(boolean value);
 }
