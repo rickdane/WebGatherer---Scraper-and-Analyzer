@@ -36,17 +36,12 @@ public final class Workflow_DataInterpretor_1 extends Workflow_DataInterpretorBa
     @Override
     public void runWorkflow(Map<String, Object> workflowParams) {
 
-        System.out.println(count);
+        System.out.print(count + ", ");
         count++;
 
         runWorkflowSetup(workflowParams);
 
         if (curScrapedPage != null) {
-
-            //DEBUG
-            if (curPageBaseUrl.toLowerCase().contains("http://bleacherreport.com/careers")) {
-                String pause = "";
-            }
 
             String[] checkFor1 = {"career", "job", "employment", "work"};
             checkForMatchesToSendBackLink(checkFor1, "careers");

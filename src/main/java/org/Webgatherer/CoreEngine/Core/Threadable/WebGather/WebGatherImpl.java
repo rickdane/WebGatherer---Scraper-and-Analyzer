@@ -24,22 +24,15 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
     private Wait<WebDriver> wait;
     private WebDriverFactory webDriverFactory;
     private TextExtraction textExtraction;
-
-    protected int maxNullEntries = 10;
-    protected int cntMaxNullEntries = 0;
-    protected int maxMillisecondTimeout = 12000;
+    private PageRetrieverThreadManager pageRetrieverThreadManager;
 
     @Inject
-    public WebGatherImpl(PropertiesContainer propertiesContainer, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, TextExtraction textExtraction) {
+    public WebGatherImpl(PageRetrieverThreadManager pageRetrieverThreadManager, PropertiesContainer propertiesContainer, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, TextExtraction textExtraction) {
         super(propertiesContainer);
         this.workflowWrapper = workflowWrapper;
         this.webDriverFactory = webDriverFactory;
         this.textExtraction = textExtraction;
-
-        Properties properties = propertiesContainer.getProperties("CoreEngine");
-        maxNullEntries = Integer.parseInt(properties.getProperty("webGather_maxNullEntries"));
-        cntMaxNullEntries = Integer.parseInt(properties.getProperty("webGather_cntMaxNullEntries"));
-        maxMillisecondTimeout = Integer.parseInt(properties.getProperty("webGather_maxMillisecondTimeout"));
+        this.pageRetrieverThreadManager = pageRetrieverThreadManager;
 
     }
 
@@ -57,46 +50,6 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
         runQueue();
     }
 
-    public void retrievePageFromUrl(String[] entry, int retrieveType) {
-        if (entry == null) {
-            cntMaxNullEntries++;
-            if (cntMaxNullEntries >= maxNullEntries) {
-                threadCommunication.setIsWebGathererThreadFinished(true);
-            }
-            return;
-        }
-
-        //if domain was marked as slow, don't attempt to load page
-        if (slowLoadingIgnoreUrls.contains(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()])) {
-            return;
-        }
-
-
-        Date before = new Date();
-
-        if (!textExtraction.isUrlValid(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()])) {
-            return;
-        }
-
-        driver.get(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()]);
-        Date after = new Date();
-
-        if (after.getTime() - before.getTime() > maxMillisecondTimeout) {
-            //this is due to a bug in the Selenium Web Driver, it doesn't always respect the timeout setting so we need to
-            //check how long the request took and if it was too long then block all future urls from this site since it will make the crawler too slow
-            slowLoadingIgnoreUrls.add(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()]);
-            return;
-        }
-
-        if (retrieveType == EnumUrlRetrieveOptions.HTMLPAGE.ordinal()) {
-            entry[ThreadCommunicationBase.PageQueueEntries.SCRAPED_PAGE.ordinal()] = driver.getPageSource();
-        }
-        if (retrieveType == EnumUrlRetrieveOptions.TEXTPAGE.ordinal()) {
-            //TODO change this, its not currently implemented
-        }
-
-        threadCommunication.addToOutputDataHolder(entry);
-    }
 
     public WebDriver getDriver() {
         return driver;
@@ -134,6 +87,15 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
         }
 
         System.out.println("Workflow - WebGather Destroyed");
+    }
+
+    public void retrievePageFromUrl( int retrieveType) {
+        //TODO, make use of argument variables, method was repurposed so those aren't currently being used but should be put through to the
+        // pageRetrieverThreadManager.run() method being called
+
+        pageRetrieverThreadManager.configure(this, threadCommunication);
+        pageRetrieverThreadManager.checkToExpireInterval(retrieveType);
+        pageRetrieverThreadManager.run(retrieveType);
     }
 
     private boolean determineWhetherBreakLoop() {

@@ -17,14 +17,17 @@ import java.util.*;
  */
 public class ExampleRun_WebPagesScrape {
 
-    private static final String fileOutput = "/home/user/Dropbox/Rick/WebGatherer/Output/webScrape.html";
+    private static final String FILE_OUTPUT = "/home/user/Dropbox/Rick/WebGatherer/Output/webScrape.html";
+    private static final String INPUT_URLS = "/home/user/Dropbox/Rick/WebGatherer/Input/inputUrls";
+    private static final String WORKFLOW_WEBGATHER = "org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.Workflow_WebGather_1";
+    private static final String WORKFLOW_DATAINTERPRETOR = "org.Webgatherer.WorkflowExample.Workflows.Implementations.DataInterpetor.Workflow_DataInterpretor_1";
 
     public static void main(String[] args) {
 
         Injector injector = Guice.createInjector(new DependencyBindingModule());
 
         ControllerFlow wfContrl = injector.getInstance(ControllerFlow.class);
-        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, "org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.Workflow_WebGather_1", "org.Webgatherer.WorkflowExample.Workflows.Implementations.DataInterpetor.Workflow_DataInterpretor_1");
+        FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, WORKFLOW_WEBGATHER, WORKFLOW_DATAINTERPRETOR);
 
         testPrintResults(finalOutputContainer);
     }
@@ -79,10 +82,10 @@ public class ExampleRun_WebPagesScrape {
 
                 LinkedList<String> list = outputContainer.getEntries();
 
-                PersistenceImpl_WriteToFile.appendToFile(fileOutput, "<br/> <br/> " + key + ": <br/> <br/>");
+                PersistenceImpl_WriteToFile.appendToFile(FILE_OUTPUT, "<br/> <br/> " + key + ": <br/> <br/>");
 
                 for (String curStr : list) {
-                    PersistenceImpl_WriteToFile.appendToFile(fileOutput, " <a href='" + curStr + "'>" + curStr + "</a> ,");
+                    PersistenceImpl_WriteToFile.appendToFile(FILE_OUTPUT, " <a href='" + curStr + "'>" + curStr + "</a> ,");
                 }
 
                 countKilledSoFar++;
@@ -103,7 +106,7 @@ public class ExampleRun_WebPagesScrape {
         TextCleaner textCleaner = new TextCleaner();
 
         ReadFiles readFiles = new ReadFiles();
-        List<String> rawUrls = readFiles.readLinesToList("/home/user/Dropbox/Rick/WebGatherer/Persistence/career/scraped_urls/testurls");
+        List<String> rawUrls = readFiles.readLinesToList(INPUT_URLS);
 
         for (String curUrl : rawUrls) {
             String[] site1 = {textCleaner.removeUrlPrefix(curUrl), curUrl, null, null};
@@ -114,5 +117,4 @@ public class ExampleRun_WebPagesScrape {
 
         return pageQueue;
     }
-
 }

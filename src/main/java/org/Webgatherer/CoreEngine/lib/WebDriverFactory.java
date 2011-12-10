@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class WebDriverFactory {
 
+    //TODO properties
     private static final int timeoutSeconds = 5;
 
     public WebDriver createNewWebDriver() {
