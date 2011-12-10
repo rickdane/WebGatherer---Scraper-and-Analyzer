@@ -1,5 +1,6 @@
 package org.Webgatherer.CoreEngine.DependencyInjection;
 
+import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.Controller.ControllerFlow;
 import org.Webgatherer.Controller.WorkflowControllerImpl_1;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
@@ -37,6 +38,8 @@ public class DependencyBindingModule extends AbstractModule {
         bind (WebGather.class).to(WebGatherImpl.class);
 
         bind (HtmlParser.class).to(HtmlParserImpl.class);
+
+        bind(PropertiesContainer.class).in(Singleton.class);
 
     }
 }

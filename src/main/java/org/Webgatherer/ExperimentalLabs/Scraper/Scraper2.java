@@ -1,7 +1,7 @@
-package org.Webgatherer.Controller;
+package org.Webgatherer.ExperimentalLabs.Scraper;
 
 import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
-import org.Webgatherer.Utility.TextCleaner;
+import org.Webgatherer.Persistence.InputOutput.PersistenceImpl_WriteToFile;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,17 +12,31 @@ import java.util.List;
 /**
  * @author Rick Dane
  */
-public class ExampleMain {
+public class Scraper2 {
+    private static int pageNum = 1;
+    private static int maxPages = 67;
+    private static String fileOutput = "/home/user/Dropbox/Rick/WebGatherer/Output/crunchbase";
+    private static int delay = 100;
 
-    /**
-     * FOR TESTING ONLY
-     *
-     * @param args
-     */
     public static void main(String[] args) {
 
-        testDriver();
+        WebDriverFactory webDriverFactory = new WebDriverFactory();
+        WebDriver driver = webDriverFactory.createNewWebDriver();
 
+        while (pageNum <= maxPages) {
+            sleep();
+            testDriver(driver);
+            pageNum++;
+        }
+        driver.close();
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private static String prepareBaseDomainUrl(String url) {
@@ -34,12 +48,9 @@ public class ExampleMain {
         return url;
     }
 
-    private static void testDriver() {
-        String url = "http://www.crunchbase.com/maps/search?range=140&geo=san+francisco%2C+ca";
+    private static void testDriver(WebDriver driver) {
 
-        WebDriverFactory webDriverFactory = new WebDriverFactory();
-        WebDriver driver = webDriverFactory.createNewWebDriver();
-        driver.get(url);
+        String url = "http://www.crunchbase.com/maps/search?range=140&geo=san+francisco%2C+ca&page=" + pageNum;
         driver.get(url);
 
         List<WebElement> links;
@@ -54,9 +65,9 @@ public class ExampleMain {
                 onclick = link.getAttribute("onclick");
                 if (onclick.startsWith("snap_to_marker")) {
                     String title = link.getAttribute("title");
-                    Thread.sleep(500);
+                    sleep();
                     link.click();
-                    String[] tmpArray = {convertToUrl(title), title};
+                    String[] tmpArray = {convertToUrl(title).toLowerCase(), title.toLowerCase()};
                     initialUrls.add(tmpArray);
                 }
             } catch (Exception e) {
@@ -69,11 +80,10 @@ public class ExampleMain {
             String pulledUrl = pullCompanyUrl(driver, curEntry);
             if (pulledUrl != null) {
                 urls.add(pulledUrl);
-                System.out.println("<a href='" + pulledUrl + "'>" + pulledUrl + "</a>");
+                System.out.println(pulledUrl);
+                PersistenceImpl_WriteToFile.appendToFile(fileOutput, pulledUrl + "\n");
             }
         }
-
-        driver.close();
     }
 
     private static String pullCompanyUrl(WebDriver driver, String[] origUrl) {
@@ -83,8 +93,14 @@ public class ExampleMain {
         List<WebElement> links = driver.findElements(By.tagName("a"));
         for (WebElement curElement : links) {
             String matchUrl = curElement.getAttribute("href");
-            if (matchUrl != null && !matchUrl.contains("crunchbase") && matchUrl.contains(origUrl[1].substring(0, 6))) {
-                return matchUrl;
+            if (matchUrl != null) {
+                String checkVar = null;
+                if (origUrl[1].length() >= 5) {
+                    checkVar = origUrl[1].substring(0, 4);
+                }
+                if (checkVar != null && !matchUrl.contains("crunchbase") && matchUrl.toLowerCase().contains(checkVar)) {
+                    return matchUrl;
+                }
             }
         }
 

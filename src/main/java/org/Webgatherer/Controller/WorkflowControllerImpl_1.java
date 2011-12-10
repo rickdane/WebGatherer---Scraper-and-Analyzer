@@ -29,7 +29,7 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     private Provider<WebGather> webGatherProvider;
     private Map<String, Object> parameterMap;
 
-    private final int MAX_SLEEPS = 3000;
+    private final int MAX_SLEEPS = 1000000;
     private int sleepCount = 0;
     private final int SLEEP_LENGTH = 250;
 

@@ -81,7 +81,7 @@ public class ExampleRun_SearchScrape {
 
             System.out.println("\n " + outputContainer.getIdentifier() + ": \n");
             for (String curStr : list) {
-                System.out.println(curStr);
+                System.out.println(curStr + "\n");
             }
             if (countKilledSoFar == killCount) {
                 break;

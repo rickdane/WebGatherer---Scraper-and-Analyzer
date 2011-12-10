@@ -1,5 +1,6 @@
 package org.Webgatherer.CoreEngine.Core.Threadable.DataInterpreatation;
 
+import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.CoreEngine.Core.Threadable.Base.BaseWebThreadImpl;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapper;
 import com.google.inject.Inject;
@@ -13,13 +14,16 @@ import java.util.Map;
  */
 public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterpretor {
 
-    protected final int THREAD_SLEEP = 3000;
+    protected final int threadSleep;
     protected int emptyLoopCycles = 0;
-    protected int maxEmptyLoopCycles = 55;
+    protected int maxEmptyLoopCycles;
 
     @Inject
-    public DataInterpretorImpl(WorkflowWrapper workflowWrapper) {
+    public DataInterpretorImpl(PropertiesContainer propertiesContainer, WorkflowWrapper workflowWrapper) {
+        super(propertiesContainer);
         this.workflowWrapper = workflowWrapper;
+        maxEmptyLoopCycles = Integer.parseInt(properties.getProperty("dataInterpretor_maxEmptyLoopCycles"));
+        threadSleep = Integer.parseInt(properties.getProperty("dataInterpretor_threadSleep"));
     }
 
     public void run() {
@@ -61,6 +65,7 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
 
         //the "main loop" for this thread has finished, so we need to run the destroy method on the workflow as it may have state data that needs to be released
         workflowWrapper.cleanDestroyWorkflow(workflowId);
+        System.out.println("Data Interpreter Workflow Successfully Destroyed");
     }
 
     private boolean determineWhetherBreakLoop() {
@@ -72,7 +77,7 @@ public class DataInterpretorImpl extends BaseWebThreadImpl implements DataInterp
             emptyLoopCycles++;
 
             try {
-                Thread.sleep(THREAD_SLEEP);
+                Thread.sleep(threadSleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -35,11 +35,7 @@ public interface ThreadCommunication {
 
     public String[] getFromPageQueue();
 
-    public int getCheckQuitInterval();
-
     public String[] getFromOutputDataHolder();
-
-    public void setCheckQuitInterval(int checkQuitInterval);
 
     /**
      * Sets an object into the local hashmap for storing custom objects, these objects are ONLY meant for use

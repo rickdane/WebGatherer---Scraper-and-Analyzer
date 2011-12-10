@@ -59,17 +59,6 @@ public final class Workflow_DataInterpretor_SearchResultsScrape extends Workflow
         }
     }
 
-    protected Map<String, int[]> prepareInitParams() {
-        //0 = containerDefaultMaxEntries
-        //1 = containerDefaultMaxAttempts
-
-        Map<String, int[]> initParams = new HashMap<String, int[]>();
-        int[] one = {50, 100};
-        initParams.put(curCustomLabel, one);
-
-        return initParams;
-    }
-
     @Override
     public void destroyCleanly() {
         while (!threadCommunication.isPageQueueEmpty()) {

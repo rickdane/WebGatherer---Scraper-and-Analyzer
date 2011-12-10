@@ -5,12 +5,10 @@ import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
-import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
 import org.Webgatherer.WorkflowExample.Workflows.Base.Common.WorkflowBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Wait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +17,9 @@ import java.util.Map;
 /**
  * @author Rick Dane
  */
-public class Workflow_WebSearch1 extends WorkflowBase {
+public class Workflow_WebSearch2 extends WorkflowBase {
 
-    public Workflow_WebSearch1(Injector injector) {
+    public Workflow_WebSearch2(Injector injector) {
         super(injector);
     }
 

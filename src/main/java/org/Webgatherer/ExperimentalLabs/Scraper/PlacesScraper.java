@@ -37,7 +37,6 @@ public class PlacesScraper {
 
         String url = "https://www.google.com/search?gcx=c&sourceid=chrome&ie=UTF-8&q=google+places#q=" + searchString + "&hl=en&tbm=plcs&prmd=imvns&start=" + start;
 
-
         driver.get(url);
 
         List<WebElement> links;

@@ -6,7 +6,6 @@ package org.Webgatherer.CoreEngine.Core.ThreadCommunication;
 public class ThreadCommunicationBase {
     private String threadIdentifier;
     private Boolean shouldBeRunning = true;
-    private int checkQuitInterval = 25;
     private boolean isWebGathererThreadFinished = false;
 
     public enum PageQueueEntries {
@@ -23,14 +22,6 @@ public class ThreadCommunicationBase {
 
     public Boolean shouldBeRunning() {
         return shouldBeRunning;
-    }
-
-    public int getCheckQuitInterval() {
-        return checkQuitInterval;
-    }
-
-    public void setCheckQuitInterval(int checkQuitInterval) {
-        this.checkQuitInterval = checkQuitInterval;
     }
 
     public boolean isWebGathererThreadFinished() {

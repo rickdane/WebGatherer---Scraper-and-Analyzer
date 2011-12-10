@@ -1,7 +1,9 @@
 package org.Webgatherer.Persistence.InputOutput;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -13,7 +15,19 @@ public class PersistenceImpl_WriteToFile implements Persistence {
 
     }
 
-    private void writeToFile(String filePath, String text) {
+    public static void appendToFile(String filePath, String text) {
+        try {
+
+            BufferedWriter out = new BufferedWriter(new FileWriter(filePath, true));
+            out.write(text);
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToFile(String filePath, String text) {
         try {
             // Create file
             FileWriter fstream = new FileWriter(filePath);

@@ -4,7 +4,6 @@ import com.google.inject.Injector;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
-import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParser;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 import org.Webgatherer.WorkflowExample.DataHolders.DataHolder;
@@ -14,7 +13,6 @@ import org.Webgatherer.WorkflowExample.Workflows.Base.Common.WorkflowBase;
 import org.ardverk.collection.PatriciaTrie;
 import org.ardverk.collection.StringKeyAnalyzer;
 import org.ardverk.collection.Trie;
-import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +24,7 @@ import java.util.Map;
 public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
 
     protected Trie<String, DataHolder> trie = new PatriciaTrie<String, DataHolder>(StringKeyAnalyzer.INSTANCE);
+    protected List<String> negativeMatchUrlList = new ArrayList<String>();
     protected DataHolder dataHolder;
     protected String curEntryKey;
     protected String curPageBaseUrl;
@@ -36,12 +35,12 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
     protected FinalOutputContainer finalOutputContainer;
     protected ThreadCommunication threadCommunication;
 
-    protected final int CONTAINER_DEFAULT_MAX_ENTRIES = 1;
-    protected final int CONTAINER_DEFAULT_MAX_ATTEMPTS = 1;
-
     protected List<String> trackSentBackLinks = new ArrayList<String>();
     protected HtmlParser htmlParser;
     protected String curWebPageText;
+
+    protected int containerDefaultMaxEntries;
+    protected int containerDefaultMaxAttempts;
 
     /**
      * This is meant to be called each time the runWorfklow() method is called, it combines functionality that different workflows
@@ -50,6 +49,10 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
      * @param workflowParams
      */
     protected void runWorkflowSetup(Map<String, Object> workflowParams) {
+
+        containerDefaultMaxEntries = Integer.parseInt(properties.getProperty("workflow_DataInterpretorBase_containerDefaultMaxEntries"));
+        containerDefaultMaxAttempts = Integer.parseInt(properties.getProperty("workflow_DataInterpretorBase_containerDefaultMaxAttempts"));
+
         //TODO refactor this as it doesn't need to be called with each workflow iteration
         setUp(workflowParams);
 
@@ -86,8 +89,6 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
         super(injector);
     }
 
-    protected abstract Map<String, int[]> prepareInitParams();
-
     protected void setUp(Map<String, Object> workflowParams) {
         threadCommunication = (ThreadCommunication) workflowParams.get("threadCommunication");
         finalOutputContainer = (FinalOutputContainer) workflowParams.get("finalOutputContainer");
@@ -98,10 +99,6 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
         if (dataHolder != null && dataHolder.checkIfContainerAvailable(label) != StatusIndicator.AVAILABLE) {
             return;
         }
-
-        //TODO fix this, shouldn't be hard-coded
-        int containerDefaultMaxEntries = 1;
-        int containerDefaultMaxAttempts = 15;
 
         dataHolder = trie.get(curEntryKey);
         if (dataHolder == null) {
@@ -124,28 +121,28 @@ public abstract class Workflow_DataInterpretorBase extends WorkflowBase {
         addToFinalOutputContainer();
     }
 
+    protected boolean determineIfPageContains(String[] mustContainAtLeastOne, String[] mustContainAllEntries, String searchInText) {
+
+        searchInText = searchInText.toLowerCase();
+
+        for (String curEntry : mustContainAllEntries) {
+            if (!searchInText.contains(curEntry.toLowerCase())) {
+                return false;
+            }
+        }
+
+        for (String curEntry : mustContainAtLeastOne) {
+            if (searchInText.contains(curEntry.toLowerCase())) {
+                return true;
+            }
+        }
+        return true;
+    }
+
     protected void addToFinalOutputContainer() {
         while (!dataHolder.isFinishedContainerQueueEmpty()) {
             ContainerBase cb = dataHolder.pullFromFinishedContainerQueue();
             finalOutputContainer.addToFinalOutputContainer(curEntryKey + "." + cb.getIdentifier(), cb);
         }
     }
-
-    protected void initializeDataHolder(Map<String, int[]> initParams) {
-//        dataHolder = trie.get(curEntryKey);
-//        if (dataHolder == null) {
-//
-//        for (Map.Entry<String, int[]> curEntry : initParams.entrySet()) {
-//            curEntryKey = curEntry.getKey();
-//            dataHolder = new DataHolderImpl();
-//            int[] numbers = curEntry.getValue();
-//            int containerDefaultMaxEntries = numbers[0];
-//            int containerDefaultMaxAttempts = numbers[1];
-//
-//            dataHolder.createContainer(curEntry.getKey(), containerDefaultMaxEntries, containerDefaultMaxAttempts);
-//            trie.put(curEntryKey, dataHolder);
-//        }
-        //}
-    }
-
 }

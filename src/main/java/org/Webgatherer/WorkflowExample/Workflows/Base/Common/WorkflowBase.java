@@ -3,6 +3,7 @@ package org.Webgatherer.WorkflowExample.Workflows.Base.Common;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
+import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.htmlcleaner.HtmlCleaner;
@@ -18,14 +19,16 @@ public abstract class WorkflowBase {
     protected Injector injector;
     protected Provider<HtmlCleaner> htmlCleanerProvider;
     protected HtmlCleaner htmlCleaner;
-
+    protected Properties properties;
 
     protected WorkflowBase(Injector injector) {
         this.injector = injector;
         htmlCleanerProvider = injector.getProvider(HtmlCleaner.class);
         htmlCleaner = htmlCleanerProvider.get();
-    }
+        PropertiesContainer propertiesContainer = injector.getInstance(PropertiesContainer.class);
+        properties = propertiesContainer.getProperties("WorkflowExample");
 
+    }
 
 
     public abstract void runWorkflow(Map<String, Object> workflowParams);

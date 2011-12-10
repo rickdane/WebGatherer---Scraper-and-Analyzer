@@ -4,6 +4,7 @@ import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.Webgatherer.Persistence.InputOutput.PersistenceImpl_WriteToFile;
 import org.Webgatherer.Utility.ReadFiles;
 import org.Webgatherer.Utility.TextCleaner;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
@@ -15,6 +16,8 @@ import java.util.*;
  * @author Rick Dane
  */
 public class ExampleRun_WebPagesScrape {
+
+    private static final String fileOutput = "/home/user/Dropbox/Rick/WebGatherer/Output/webScrape.html";
 
     public static void main(String[] args) {
 
@@ -76,10 +79,10 @@ public class ExampleRun_WebPagesScrape {
 
                 LinkedList<String> list = outputContainer.getEntries();
 
-                System.out.print("\n " + key + " ,");
-                System.out.print(outputContainer.getIdentifier() + " ,");
+                PersistenceImpl_WriteToFile.appendToFile(fileOutput, "<br/> <br/> " + key + ": <br/> <br/>");
+
                 for (String curStr : list) {
-                    System.out.print(curStr + ",");
+                    PersistenceImpl_WriteToFile.appendToFile(fileOutput, " <a href='" + curStr + "'>" + curStr + "</a> ,");
                 }
 
                 countKilledSoFar++;

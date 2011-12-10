@@ -1,5 +1,6 @@
 package org.Webgatherer.CoreEngine.Core.Threadable.WebGather;
 
+import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
 import org.Webgatherer.CoreEngine.Core.Threadable.Base.BaseWebThreadImpl;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
@@ -7,6 +8,7 @@ import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapper;
 import com.google.inject.Inject;
 import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
+import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.TextExtraction;
 import org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.EnumUrlRetrieveOptions;
 import org.apache.commons.net.nntp.Threadable;
 import org.openqa.selenium.WebDriver;
@@ -21,18 +23,29 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
     private WebDriver driver;
     private Wait<WebDriver> wait;
     private WebDriverFactory webDriverFactory;
+    private TextExtraction textExtraction;
+
+    protected int maxNullEntries = 10;
+    protected int cntMaxNullEntries = 0;
+    protected int maxMillisecondTimeout = 12000;
 
     @Inject
-    public WebGatherImpl(WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory) {
+    public WebGatherImpl(PropertiesContainer propertiesContainer, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, TextExtraction textExtraction) {
+        super(propertiesContainer);
         this.workflowWrapper = workflowWrapper;
         this.webDriverFactory = webDriverFactory;
+        this.textExtraction = textExtraction;
+
+        Properties properties = propertiesContainer.getProperties("CoreEngine");
+        maxNullEntries = Integer.parseInt(properties.getProperty("webGather_maxNullEntries"));
+        cntMaxNullEntries = Integer.parseInt(properties.getProperty("webGather_cntMaxNullEntries"));
+        maxMillisecondTimeout = Integer.parseInt(properties.getProperty("webGather_maxMillisecondTimeout"));
+
     }
 
     public void configure(WebDriver driver, Wait<WebDriver> wait, ThreadCommunication threadCommunication, String workflowId, FinalOutputContainer finalOutputContainer) {
         super.configure(threadCommunication, workflowId, finalOutputContainer);
         this.driver = driver;
-        this.wait = wait;
-
     }
 
     public WebDriver getNewWebDriver() {
@@ -44,9 +57,6 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
         runQueue();
     }
 
-    protected int maxNullEntries = 10;
-    protected int cntMaxNullEntries = 0;
-
     public void retrievePageFromUrl(String[] entry, int retrieveType) {
         if (entry == null) {
             cntMaxNullEntries++;
@@ -55,7 +65,29 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
             }
             return;
         }
+
+        //if domain was marked as slow, don't attempt to load page
+        if (slowLoadingIgnoreUrls.contains(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()])) {
+            return;
+        }
+
+
+        Date before = new Date();
+
+        if (!textExtraction.isUrlValid(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()])) {
+            return;
+        }
+
         driver.get(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()]);
+        Date after = new Date();
+
+        if (after.getTime() - before.getTime() > maxMillisecondTimeout) {
+            //this is due to a bug in the Selenium Web Driver, it doesn't always respect the timeout setting so we need to
+            //check how long the request took and if it was too long then block all future urls from this site since it will make the crawler too slow
+            slowLoadingIgnoreUrls.add(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()]);
+            return;
+        }
+
         if (retrieveType == EnumUrlRetrieveOptions.HTMLPAGE.ordinal()) {
             entry[ThreadCommunicationBase.PageQueueEntries.SCRAPED_PAGE.ordinal()] = driver.getPageSource();
         }
@@ -113,7 +145,7 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
             emptyLoopCycles++;
 
             try {
-                Thread.sleep(THREAD_SLEEP);
+                Thread.sleep(threadSleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
