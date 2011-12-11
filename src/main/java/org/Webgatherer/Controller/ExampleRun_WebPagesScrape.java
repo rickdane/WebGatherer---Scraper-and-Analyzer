@@ -10,6 +10,7 @@ import org.Webgatherer.Utility.TextCleaner;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
@@ -101,7 +102,7 @@ public class ExampleRun_WebPagesScrape {
 
     private static Queue PreparePageQueue() {
 
-        Queue<String[]> pageQueue = new LinkedList<String[]>();
+        Queue<String[]> pageQueue = new ConcurrentLinkedQueue<String[]>();
 
         TextCleaner textCleaner = new TextCleaner();
 

@@ -1,6 +1,11 @@
 package org.Webgatherer.CoreEngine.Core.ThreadCommunication;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
+
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author Rick Dane
@@ -8,10 +13,10 @@ import java.util.*;
 @SuppressWarnings({"ALL"})
 public class ThreadCommunicationImpl extends ThreadCommunicationBase implements ThreadCommunication {
 
-    private final Queue<String[]> outputDataHolder = new LinkedList<String[]>();
-    private volatile Queue<String[]> pageQueue = new LinkedList<String[]>();
-    private final  Queue<String[]> sendbackDataHolder = new LinkedList<String[]>();
-    private volatile  Map<String, Object> customDataMap = new HashMap<String, Object>();
+    private final Queue<String[]> outputDataHolder = new ConcurrentLinkedQueue<String[]>();
+    private volatile Queue<String[]> pageQueue = new ConcurrentLinkedQueue<String[]>();
+    private final Queue<String[]> sendbackDataHolder = new ConcurrentLinkedQueue<String[]>();
+    private volatile Map<String, Object> customDataMap = new HashMap<String, Object>();
 
     public void setPageQueue(Queue pageQueue) {
         if (pageQueue != null) {
@@ -81,9 +86,9 @@ public class ThreadCommunicationImpl extends ThreadCommunicationBase implements 
     }
 
     public void setCustomDataMap(Map map) {
-            if (map != null) {
-                this.customDataMap = map;
-            }
+        if (map != null) {
+            this.customDataMap = map;
+        }
     }
 
     public void addToPageQueue(String[] page) {

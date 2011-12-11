@@ -21,22 +21,23 @@ public class PageRetrieverThreadManager {
     private HashSet<String> inWaiting = new HashSet<String>();
 
     private WebGather webGather;
-    public int maxNullEntries;
-    public int cntMaxNullEntries;
-    public int maxMillisecondTimeout;
+    private int maxNullEntries;
+    private int cntMaxNullEntries;
 
     //TODO properties
     private int reloadInterval;
 
     private Date lastIntervalCheck = new Date();
     private Provider<ThreadRetrievePage> threadRetrievePageProvider;
+    private ThreadCommunicationPageRetriever threadCommunicationPageRetriever;
 
     @Inject
-    public PageRetrieverThreadManager(Provider<ThreadRetrievePage> threadRetrievePageProvider, PropertiesContainer propertiesContainer) {
+    public PageRetrieverThreadManager(Provider<ThreadRetrievePage> threadRetrievePageProvider, PropertiesContainer propertiesContainer, ThreadCommunicationPageRetriever threadCommunicationPageRetriever) {
         Properties properties = propertiesContainer.getProperties("CoreEngine");
         maxNullEntries = Integer.parseInt(properties.getProperty("webGather_maxNullEntries"));
         cntMaxNullEntries = Integer.parseInt(properties.getProperty("webGather_cntMaxNullEntries"));
-        maxMillisecondTimeout = Integer.parseInt(properties.getProperty("webGather_maxMillisecondTimeout"));
+
+         this.threadCommunicationPageRetriever = threadCommunicationPageRetriever;
         this.threadRetrievePageProvider = threadRetrievePageProvider;
         reloadInterval = Integer.parseInt(properties.getProperty("pageRetrieverThreadManager_reloadInterval"));
     }
@@ -77,12 +78,6 @@ public class PageRetrieverThreadManager {
 
         String[] entry = threadCommunication.getFromPageQueue();
         if (entry == null) {
-            //TODO Immplement sleep?
-//                cntMaxNullEntries++;
-//                if (cntMaxNullEntries >= maxNullEntries) {
-//                    threadCommunication.setIsWebGathererThreadFinished(true);
-//                    return;
-//                }
             return;
         }
 
@@ -95,7 +90,7 @@ public class PageRetrieverThreadManager {
 
     private void launchThread(String[] entry, int retrieveType) {
         ThreadRetrievePage threadRetrievePage = threadRetrievePageProvider.get();
-        threadRetrievePage.configure(entry, threadCommunication, retrieveType);
+        threadRetrievePage.configure(entry, threadCommunication, retrieveType,threadCommunicationPageRetriever);
         threadRetrievePage.start();
     }
 

@@ -7,6 +7,7 @@ import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
@@ -91,7 +92,7 @@ public class ExampleRun_SearchScrape {
 
     private static Queue testLoadPages() {
 
-        Queue<String[]> pageQueue = new LinkedList<String[]>();
+        Queue<String[]> pageQueue = new ConcurrentLinkedQueue<String[]>();
 
         String numPages = "7";
 

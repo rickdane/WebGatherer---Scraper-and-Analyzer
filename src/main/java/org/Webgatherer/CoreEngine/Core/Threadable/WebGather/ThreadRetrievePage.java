@@ -21,6 +21,7 @@ public class ThreadRetrievePage extends Thread {
     private ThreadCommunication threadCommunication;
     private String[] entry;
     private int retrieveType;
+    private ThreadCommunicationPageRetriever threadCommunicationPageRetriever;
 
     @Inject
     public ThreadRetrievePage(WebDriverFactory webDriverFactory, TextExtraction textExtraction) {
@@ -29,10 +30,11 @@ public class ThreadRetrievePage extends Thread {
         this.threadCommunication = threadCommunication;
     }
 
-    public void configure(String[] entry, ThreadCommunication threadCommunication, int retrieveType) {
+    public void configure(String[] entry, ThreadCommunication threadCommunication, int retrieveType, ThreadCommunicationPageRetriever threadCommunicationPageRetriever) {
         this.threadCommunication = threadCommunication;
         this.entry = entry;
         this.retrieveType = retrieveType;
+        this.threadCommunicationPageRetriever = threadCommunicationPageRetriever;
     }
 
     public void run() {
@@ -41,13 +43,14 @@ public class ThreadRetrievePage extends Thread {
 
     public void retrievePageFromUrl() {
 
-        //TODO put this back in, needs to be reworked now that this is in its own thread
-        //if domain was marked as slow, don't attempt to load page
-//        if (slowLoadingIgnoreUrls.contains(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()])) {
-//            return;
-//        }
+        threadCommunicationPageRetriever.registerNewThread();
 
-        // Date before = new Date();
+        //if domain was marked as slow, don't attempt to load page
+        if (threadCommunicationPageRetriever.doesSlowLoadingUrlsContain(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()])) {
+            return;
+        }
+
+        Date before = new Date();
         try {
             if (!textExtraction.isUrlValid(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()])) {
                 return;
@@ -55,13 +58,15 @@ public class ThreadRetrievePage extends Thread {
 
             driver.get(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()]);
 
+            Date after = new Date();
+
             //TODO put this back in, needs to be reworked now that this is in its own thread
-//        if (after.getTime() - before.getTime() > maxMillisecondTimeout) {
-//            //this is due to a bug in the Selenium Web Driver, it doesn't always respect the timeout setting so we need to
-//            //check how long the request took and if it was too long then block all future urls from this site since it will make the crawler too slow
-//            slowLoadingIgnoreUrls.add(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()]);
-//            return;
-//        }
+            if (after.getTime() - before.getTime() > threadCommunicationPageRetriever.getMaxMillisecondTimeout()) {
+                //this is due to a bug in the Selenium Web Driver, it doesn't always respect the timeout setting so we need to
+                //check how long the request took and if it was too long then block all future urls from this site since it will make the crawler too slow
+                threadCommunicationPageRetriever.addSlowLoadingIgnoreUrl(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()]);
+                return;
+            }
 
             if (retrieveType == EnumUrlRetrieveOptions.HTMLPAGE.ordinal()) {
                 entry[ThreadCommunicationBase.PageQueueEntries.SCRAPED_PAGE.ordinal()] = driver.getPageSource();
@@ -76,6 +81,8 @@ public class ThreadRetrievePage extends Thread {
         } catch (Exception e) {
             driver.close();
         }
+
+        threadCommunicationPageRetriever.registerKilledThread();
     }
 
     public boolean isDummy() {

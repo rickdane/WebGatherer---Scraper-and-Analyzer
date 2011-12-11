@@ -20,7 +20,6 @@ public abstract class BaseWebThreadImpl extends Thread implements BaseWebThread 
     protected FinalOutputContainer finalOutputContainer;
     protected String workflowId;
     protected WorkflowWrapper workflowWrapper;
-    protected HashSet<String> slowLoadingIgnoreUrls = new HashSet<String>();
 
     protected int threadSleep;
     protected int emptyLoopCycles = 0;
