@@ -2,6 +2,7 @@ package org.Webgatherer.ExperimentalLabs.WebService;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
@@ -46,22 +47,27 @@ public class WebServiceClient {
         localContext = new BasicHttpContext();
         webServiceUrl = baseUrl;
 
+        httpClient.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.RFC_2109);
+
     }
 
     public String servicePost(String methodName, String data, String contentType) {
+        HttpPost httpPost = new HttpPost(webServiceUrl + methodName);
+
+        return serviceCall(methodName, data, contentType, httpPost);
+    }
+
+    private String serviceCall(String methodName, String data, String contentType, HttpEntityEnclosingRequestBase httpEntityEnclosingRequestBase) {
         String ret = null;
 
-        httpClient.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.RFC_2109);
-
-        httpPost = new HttpPost(webServiceUrl + methodName);
         response = null;
 
         StringEntity tmp = null;
 
         if (contentType != null) {
-            httpPost.setHeader("Content-Type", contentType);
+            httpEntityEnclosingRequestBase.setHeader("Content-Type", contentType);
         } else {
-            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            httpEntityEnclosingRequestBase.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
 
         try {
@@ -69,10 +75,10 @@ public class WebServiceClient {
         } catch (UnsupportedEncodingException e) {
         }
 
-        httpPost.setEntity(tmp);
+        httpEntityEnclosingRequestBase.setEntity(tmp);
 
         try {
-            response = httpClient.execute(httpPost, localContext);
+            response = httpClient.execute(httpEntityEnclosingRequestBase, localContext);
 
             if (response != null) {
                 ret = EntityUtils.toString(response.getEntity());
@@ -83,6 +89,11 @@ public class WebServiceClient {
         return ret;
     }
 
+    public String serviceGet(String endValue) {
+        HttpGet httpGet = new HttpGet(webServiceUrl + "/" + endValue);
+
+        return coreGet(httpGet);
+    }
 
     public String serviceGet(String methodName, Map<String, String> params) {
         String getUrl = webServiceUrl + methodName;
@@ -100,11 +111,15 @@ public class WebServiceClient {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
             i++;
         }
 
-        httpGet = new HttpGet(getUrl);
+        HttpGet httpGet = new HttpGet(getUrl);
+
+        return coreGet(httpGet);
+    }
+
+    private String coreGet(HttpGet httpGet) {
 
         try {
             response = httpClient.execute(httpGet);

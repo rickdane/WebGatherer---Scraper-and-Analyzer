@@ -16,14 +16,18 @@ public class WebServiceCaller {
 
         Entry entryTransport = new Entry();
         entryTransport.setEntry("some entry from web gatherer2222222");
-        entryTransport.setDescription("some description from web gatherer22222");
+        entryTransport.setDescription("sumfin'");
         String jsonStr = gson.toJson(entryTransport);
 
         String json2 = "{description: \"entry from webgatherer\"}";
 
         WebServiceClient webService = new WebServiceClient(serviceEndpoint);
 
-        webService.servicePost("",jsonStr,"application/json");
+        webService.servicePost("", jsonStr, "application/json");
+
+        String resp = webService.serviceGet("1");
+
+        String pause = "";
     }
 
 }
