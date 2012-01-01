@@ -1,4 +1,4 @@
-package org.Webgatherer.Controller;
+package org.Webgatherer.Controller.Component;
 
 import org.Webgatherer.CoreEngine.Core.Threadable.DataInterpreatation.DataInterpretor;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
@@ -29,9 +29,10 @@ public class WorkflowControllerImpl_1 extends Thread implements ControllerFlow {
     private Provider<WebGather> webGatherProvider;
     private Map<String, Object> parameterMap;
 
-    private final int MAX_SLEEPS = 1000000;
+    //TODO Properties
+    private final int MAX_SLEEPS = 5000;
     private int sleepCount = 0;
-    private final int SLEEP_LENGTH = 250;
+    private final int SLEEP_LENGTH = 500;
 
     @Inject
     public WorkflowControllerImpl_1(Provider<ThreadCommunication> threadCommunicationProvider, WorkflowWrapper workflowWrapper, WebDriverFactory webDriverFactory, Provider<WebGather> webGatherProvider,

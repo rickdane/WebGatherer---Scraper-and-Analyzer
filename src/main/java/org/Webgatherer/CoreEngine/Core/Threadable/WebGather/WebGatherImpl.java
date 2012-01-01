@@ -1,20 +1,19 @@
 package org.Webgatherer.CoreEngine.Core.Threadable.WebGather;
 
+import com.google.inject.Inject;
 import org.Webgatherer.Common.Properties.PropertiesContainer;
-import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
-import org.Webgatherer.CoreEngine.Core.Threadable.Base.BaseWebThreadImpl;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
+import org.Webgatherer.CoreEngine.Core.Threadable.Base.BaseWebThreadImpl;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapper;
-import com.google.inject.Inject;
 import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
 import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.TextExtraction;
-import org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.EnumUrlRetrieveOptions;
 import org.apache.commons.net.nntp.Threadable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Wait;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Rick Dane
@@ -90,9 +89,6 @@ public class WebGatherImpl extends BaseWebThreadImpl implements WebGather {
     }
 
     public void retrievePageFromUrl( int retrieveType) {
-        //TODO, make use of argument variables, method was repurposed so those aren't currently being used but should be put through to the
-        // pageRetrieverThreadManager.run() method being called
-
         pageRetrieverThreadManager.configure(this, threadCommunication);
         pageRetrieverThreadManager.checkToExpireInterval(retrieveType);
         pageRetrieverThreadManager.run(retrieveType);

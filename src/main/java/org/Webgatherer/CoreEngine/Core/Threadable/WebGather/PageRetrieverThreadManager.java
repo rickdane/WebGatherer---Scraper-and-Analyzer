@@ -5,17 +5,15 @@ import com.google.inject.Provider;
 import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
-import sun.net.idn.StringPrep;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Rick Dane
  */
 public class PageRetrieverThreadManager {
 
-    private ThreadCommunication threadCommunication;
+    protected ThreadCommunication threadCommunication;
 
     private Map<String, Queue<String[]>> waitingUrls = new HashMap<String, Queue<String[]>>();
     private HashSet<String> inWaiting = new HashSet<String>();
@@ -28,8 +26,8 @@ public class PageRetrieverThreadManager {
     private int reloadInterval;
 
     private Date lastIntervalCheck = new Date();
-    private Provider<ThreadRetrievePage> threadRetrievePageProvider;
-    private ThreadCommunicationPageRetriever threadCommunicationPageRetriever;
+    protected Provider<ThreadRetrievePage> threadRetrievePageProvider;
+    protected ThreadCommunicationPageRetriever threadCommunicationPageRetriever;
 
     @Inject
     public PageRetrieverThreadManager(Provider<ThreadRetrievePage> threadRetrievePageProvider, PropertiesContainer propertiesContainer, ThreadCommunicationPageRetriever threadCommunicationPageRetriever) {
@@ -37,7 +35,7 @@ public class PageRetrieverThreadManager {
         maxNullEntries = Integer.parseInt(properties.getProperty("webGather_maxNullEntries"));
         cntMaxNullEntries = Integer.parseInt(properties.getProperty("webGather_cntMaxNullEntries"));
 
-         this.threadCommunicationPageRetriever = threadCommunicationPageRetriever;
+        this.threadCommunicationPageRetriever = threadCommunicationPageRetriever;
         this.threadRetrievePageProvider = threadRetrievePageProvider;
         reloadInterval = Integer.parseInt(properties.getProperty("pageRetrieverThreadManager_reloadInterval"));
     }
@@ -74,27 +72,36 @@ public class PageRetrieverThreadManager {
         this.threadCommunication = threadCommunication;
     }
 
-    public void run(int retrieveType) {
-
-        String[] entry = threadCommunication.getFromPageQueue();
-        if (entry == null) {
-            return;
-        }
-
-        if (!determineIfCanStartThreadImmediately(entry)) {
-            return;
-        }
-
-        launchThread(entry, retrieveType);
+    public void configure(ThreadCommunication threadCommunication) {
+        this.threadCommunication = threadCommunication;
     }
 
-    private void launchThread(String[] entry, int retrieveType) {
+    public boolean run(int retrieveType) {
+
+        if (threadCommunicationPageRetriever.allowedToCreateNewThread()) {
+            String[] entry = threadCommunication.getFromPageQueue();
+            if (entry == null) {
+                return false;
+            }
+
+            if (!determineIfCanStartThreadImmediately(entry)) {
+                return false;
+            }
+
+            launchThread(entry, retrieveType);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    protected void launchThread(String[] entry, int retrieveType) {
         ThreadRetrievePage threadRetrievePage = threadRetrievePageProvider.get();
-        threadRetrievePage.configure(entry, threadCommunication, retrieveType,threadCommunicationPageRetriever);
+        threadRetrievePage.configure(entry, threadCommunication, retrieveType, threadCommunicationPageRetriever);
         threadRetrievePage.start();
     }
 
-    private boolean determineIfCanStartThreadImmediately(String[] entry) {
+    protected boolean determineIfCanStartThreadImmediately(String[] entry) {
 
         String key = entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()];
 

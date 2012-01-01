@@ -49,7 +49,10 @@ public final class Workflow_DataInterpretor_1 extends Workflow_DataInterpretorBa
             String[] checkFor3 = {"about", "info"};
             checkForMatchesToSendBackLink(checkFor3, "aboutus");
 
-            if (curCategory != null && curCategory.equals("aboutus")) {
+            String[] checkFor4 = {"site map"};
+            checkForMatchesToSendBackLink(checkFor4, "sitemap");
+
+            if (curCategory != null && (curCategory.equals("aboutus") || curCategory.equals("sitemap"))) {
                 checkForMatchesToSendBackLink(checkFor1, "careers");
             }
 

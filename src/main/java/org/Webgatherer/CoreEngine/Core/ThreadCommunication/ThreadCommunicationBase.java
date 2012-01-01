@@ -9,7 +9,7 @@ public class ThreadCommunicationBase {
     private boolean isWebGathererThreadFinished = false;
 
     public enum PageQueueEntries {
-        KEY, BASE_URL, CATEGORY, SCRAPED_PAGE, CUSTOM_PARAM, NUM_PAGES_TOSCRAPE, CUSTOM_LABEL;
+        KEY, BASE_URL, CATEGORY, SCRAPED_PAGE, CUSTOM_PARAM, NUM_PAGES_TOSCRAPE, CUSTOM_LABEL, EMAIL_ADDRESSES, CUSTOM_RET_VALUE;
     }
 
     public void setThreadIdentifier(String identifier) {

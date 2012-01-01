@@ -2,6 +2,7 @@ package org.Webgatherer.Controller;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.Webgatherer.Controller.Component.ControllerFlow;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
@@ -9,11 +10,10 @@ import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
 /**
  * @author Rick Dane
  */
-public class ExampleRun_SearchScrape {
+public class Entry_ExampleRun_SearchScrape {
 
     public static void main(String[] args) {
 
@@ -22,7 +22,7 @@ public class ExampleRun_SearchScrape {
         ControllerFlow wfContrl = injector.getInstance(ControllerFlow.class);
         FinalOutputContainer finalOutputContainer = launchWebGathererThread(injector, wfContrl, "org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.Workflow_WebSearch1", "org.Webgatherer.WorkflowExample.Workflows.Implementations.DataInterpetor.Workflow_DataInterpretor_SearchResultsScrape");
 
-        testPrintResults(finalOutputContainer);
+        persistResults(finalOutputContainer);
     }
 
     private static FinalOutputContainer launchWebGathererThread(Injector injector, ControllerFlow wfContrl, String workflow2, String workflow3) {
@@ -40,7 +40,7 @@ public class ExampleRun_SearchScrape {
         return finalOutputContainer;
     }
 
-    private static void testPrintResults(FinalOutputContainer finalOutputContainer) {
+    private static void persistResults(FinalOutputContainer finalOutputContainer) {
         int THREAD_SLEEP = 2000;
         int LIST_FIRST_ITEM = 0;
         int killCount = 5;

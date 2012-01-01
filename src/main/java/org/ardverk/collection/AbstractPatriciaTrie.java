@@ -281,7 +281,7 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
     /**
      * This is equivalent to the other {@link #selectR(TrieEntry, int, 
      * Object, int, Cursor, Reference)} method but without its overhead 
-     * because we're selecting only one best matching Entry from the 
+     * because we're selecting only one best matching EntryTransport from the
      * {@link Trie}.
      */
     private boolean selectR(TrieEntry<K, V> h, int bitIndex, 
@@ -454,7 +454,7 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
      * 
      * The actual get implementation. This is very similar to
      * selectR but with the exception that it might return the
-     * root Entry even if it's empty.
+     * root EntryTransport even if it's empty.
      */
     TrieEntry<K, V> getNearestEntryForKey(K key) {
         TrieEntry<K, V> current = root.left;
@@ -476,8 +476,8 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
     /**
      * Removes a single entry from the {@link Trie}.
      * 
-     * If we found a Key (Entry h) then figure out if it's
-     * an internal (hard to remove) or external Entry (easy 
+     * If we found a Key (EntryTransport h) then figure out if it's
+     * an internal (hard to remove) or external EntryTransport (easy
      * to remove)
      */
     V removeEntry(TrieEntry<K, V> h) {
@@ -496,14 +496,14 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
     /**
      * Removes an external entry from the {@link Trie}.
      * 
-     * If it's an external Entry then just remove it.
+     * If it's an external EntryTransport then just remove it.
      * This is very easy and straight forward.
      */
     private void removeExternalEntry(TrieEntry<K, V> h) {
         if (h == root) {
-            throw new IllegalArgumentException("Cannot delete root Entry!");
+            throw new IllegalArgumentException("Cannot delete root EntryTransport!");
         } else if (!h.isExternalNode()) {
-            throw new IllegalArgumentException(h + " is not an external Entry!");
+            throw new IllegalArgumentException(h + " is not an external EntryTransport!");
         } 
         
         TrieEntry<K, V> parent = h.parent;
@@ -527,15 +527,15 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
     /**
      * Removes an internal entry from the {@link Trie}.
      * 
-     * If it's an internal Entry then "good luck" with understanding
-     * this code. The Idea is essentially that Entry p takes Entry h's
+     * If it's an internal EntryTransport then "good luck" with understanding
+     * this code. The Idea is essentially that EntryTransport p takes EntryTransport h's
      * place in the trie which requires some re-wiring.
      */
     private void removeInternalEntry(TrieEntry<K, V> h) {
         if (h == root) {
-            throw new IllegalArgumentException("Cannot delete root Entry!");
+            throw new IllegalArgumentException("Cannot delete root EntryTransport!");
         } else if (!h.isInternalNode()) {
-            throw new IllegalArgumentException(h + " is not an internal Entry!");
+            throw new IllegalArgumentException(h + " is not an internal EntryTransport!");
         } 
         
         TrieEntry<K, V> p = h.predecessor;
@@ -864,7 +864,7 @@ abstract class AbstractPatriciaTrie<K, V> extends AbstractTrie<K, V> {
             if (bitIndex == -1) {
                 buffer.append("RootEntry(");
             } else {
-                buffer.append("Entry(");
+                buffer.append("EntryTransport(");
             }
             
             buffer.append("key=").append(getKey()).append(" [").append(bitIndex).append("], ");

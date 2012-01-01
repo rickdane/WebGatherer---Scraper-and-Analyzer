@@ -1,4 +1,4 @@
-package org.Webgatherer.ExperimentalLabs.WebService;
+package org.Webgatherer.Utility.Service;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -27,16 +28,13 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
 
+@ThreadSafe
 public class WebServiceClient {
 
     DefaultHttpClient httpClient;
     HttpContext localContext;
 
-    HttpResponse response = null;
-    HttpPost httpPost = null;
-    HttpGet httpGet = null;
     String webServiceUrl;
-
 
     public WebServiceClient(String baseUrl) {
         HttpParams myParams = new BasicHttpParams();
@@ -60,7 +58,7 @@ public class WebServiceClient {
     private String serviceCall(String methodName, String data, String contentType, HttpEntityEnclosingRequestBase httpEntityEnclosingRequestBase) {
         String ret = null;
 
-        response = null;
+        HttpResponse response = null;
 
         StringEntity tmp = null;
 
@@ -120,7 +118,7 @@ public class WebServiceClient {
     }
 
     private String coreGet(HttpGet httpGet) {
-
+        HttpResponse response = null;
         try {
             response = httpClient.execute(httpGet);
         } catch (Exception e) {
@@ -178,14 +176,4 @@ public class WebServiceClient {
         httpClient.getCookieStore().clear();
     }
 
-    public void abort() {
-        try {
-            if (httpClient != null) {
-                System.out.println("Abort.");
-                httpPost.abort();
-            }
-        } catch (Exception e) {
-            System.out.println("Your App Name Here" + e);
-        }
-    }
 }

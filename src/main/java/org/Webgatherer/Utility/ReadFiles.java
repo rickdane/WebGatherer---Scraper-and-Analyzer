@@ -14,19 +14,14 @@ public class ReadFiles {
     private String filesLocation = "/home/user/Dropbox/Rick/WebGatherer/WebGatherer---Scraper-and-Analyzer/src/main/resources/filesLoadIntoHashmap";
     private FileReader fr;
     private BufferedReader br;
-    private HashMap<String, List<String>> fileLists = new HashMap<String, List<String>>();
 
     public ReadFiles() {
-        readFilesToHashMap(filesLocation);
-    }
-
-    public List<String> getListByKey(String fileNameKey) {
-        return fileLists.get(fileNameKey);
+        //readFilesToHashMap(filesLocation);
     }
 
 
-    public void readFilesToHashMap(String folderPath) {
-
+    public Map<String, List<String>> readFilesToHashMapOfLists(String folderPath) {
+        Map<String, List<String>> fileLists = new HashMap<String, List<String>>();
         String fileName;
         File folder = new File(folderPath);
         File[] listOfFiles = folder.listFiles();
@@ -36,10 +31,43 @@ public class ReadFiles {
             if (listOfFiles[i].isFile()) {
                 fileName = listOfFiles[i].getName();
 
-                List<String> lineList = readLinesToList(filesLocation + "/" + fileName);
+                List<String> lineList = readLinesToList(folderPath + "/" + fileName);
                 fileLists.put(fileName, lineList);
             }
         }
+        return fileLists;
+    }
+
+    public Map<String, String> readFilesToHashMap(String folderPath) {
+        Map<String, String> retMap = new HashMap<String, String>();
+        String fileName;
+        File folder = new File(folderPath);
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                fileName = listOfFiles[i].getName();
+
+                retMap.put(fileName, readFileToString(folderPath + "/" + fileName));
+            }
+        }
+        return retMap;
+    }
+
+    public List <String> readFilesToCollection(String folderPath) {
+        List<String> retCollection = new ArrayList<String>();
+        String fileName;
+        File folder = new File(folderPath);
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                fileName = listOfFiles[i].getName();
+
+                retCollection.add(readFileToString(folderPath + "/" + fileName));
+            }
+        }
+        return retCollection;
     }
 
     public List<String> readLinesToList(String filePath) {
@@ -61,5 +89,25 @@ public class ReadFiles {
             return null;
         }
         return linesList;
+    }
+
+    public String readFileToString(String filePath) {
+        StringBuilder strBld = new StringBuilder();
+        try {
+            FileInputStream fstream = new FileInputStream(filePath);
+
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String strLine;
+
+            while ((strLine = br.readLine()) != null) {
+                strBld.append(strLine + "\n");
+            }
+            in.close();
+        } catch (Exception e) {//Catch exception if any
+            e.printStackTrace();
+            return null;
+        }
+        return strBld.toString();
     }
 }

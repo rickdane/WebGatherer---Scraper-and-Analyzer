@@ -65,7 +65,6 @@ public class WorkflowProvider {
         }
         try {
             method.invoke(workflowObject);
-            System.out.println("Workflow successfully destroyed");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Reflection failed during destroy of Workflow");

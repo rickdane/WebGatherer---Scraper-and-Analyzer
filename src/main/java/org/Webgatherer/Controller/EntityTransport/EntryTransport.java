@@ -1,9 +1,9 @@
-package org.Webgatherer.ExperimentalLabs.WebService;
+package org.Webgatherer.Controller.EntityTransport;
 
 /**
  * @author Rick Dane
  */
-public class Entry {
+public class EntryTransport {
 
     private String entry;
     private String description;

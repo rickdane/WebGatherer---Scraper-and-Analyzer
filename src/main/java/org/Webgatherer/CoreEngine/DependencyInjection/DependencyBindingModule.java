@@ -1,10 +1,8 @@
 package org.Webgatherer.CoreEngine.DependencyInjection;
 
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
 import org.Webgatherer.Common.Properties.PropertiesContainer;
-import org.Webgatherer.Controller.ControllerFlow;
-import org.Webgatherer.Controller.WorkflowControllerImpl_1;
+import org.Webgatherer.Controller.Component.ControllerFlow;
+import org.Webgatherer.Controller.Component.WorkflowControllerImpl_1;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.PageRetrieverThreadManager;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.ThreadCommunicationPageRetriever;
 import org.Webgatherer.CoreEngine.Core.Threadable.WebGather.WebGather;
@@ -21,9 +19,6 @@ import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import org.Webgatherer.CoreEngine.Workflow.WorkflowWrapperImpl_External;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author Rick Dane

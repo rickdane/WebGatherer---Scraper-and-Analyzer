@@ -1,5 +1,6 @@
 package org.Webgatherer.Controller;
 
+import org.Webgatherer.Controller.Component.ControllerFlow;
 import org.Webgatherer.CoreEngine.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 import com.google.inject.Guice;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author Rick Dane
  */
-public class ExampleRun_WebPagesScrape {
+public class Entry_ExampleRun_WebPagesScrape {
 
     private static final String FILE_OUTPUT = "/home/user/Dropbox/Rick/WebGatherer/Output/webScrape.html";
     private static final String INPUT_URLS = "/home/user/Dropbox/Rick/WebGatherer/Input/inputUrls";
@@ -49,9 +50,9 @@ public class ExampleRun_WebPagesScrape {
     }
 
     private static void testPrintResults(FinalOutputContainer finalOutputContainer) {
-        int THREAD_SLEEP = 2000;
+        int THREAD_SLEEP = 400;
         int LIST_FIRST_ITEM = 0;
-        int killCount = 1000000;
+        int killCount = 50;
         int countKilledSoFar = 0;
 
         while (true) {

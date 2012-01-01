@@ -12,21 +12,42 @@ public class EmailExtractor {
     private int lastIndexNeedsRemoval;
     private int calcLastIndex;
     private String curHtmlPage;
+    private LinkedList<String> emailNamesUsed = new LinkedList<String>();
 
     public LinkedList<String> extractEmailAddressesList(String htmlPage) {
         curHtmlPage = htmlPage;
         String retEmailAddr = "";
         LinkedList<String> retList = new LinkedList<String>();
+        boolean lastIteration = false;
 
         while (retEmailAddr != null) {
             try {
                 retEmailAddr = extractEmailAddress();
+                if (retEmailAddr != null) {
+                    try {
+                        int endIndex = curHtmlPage.length() - 1;
+                        if (calcLastIndex - endIndex <= 0) {
+                            lastIteration = true;
+                        }
+                        if (!lastIteration) {
+                            curHtmlPage = curHtmlPage.substring(calcLastIndex, endIndex);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String[] splitEmail = retEmailAddr.split("@");
+                    if (splitEmail.length >= 1) {
+                        if (retEmailAddr != null && !retList.contains(retEmailAddr) && !emailNamesUsed.contains(splitEmail[0])) {
+                            retList.add(retEmailAddr);
+                            emailNamesUsed.add(splitEmail[0]);
+                        }
+                    }
+                }
             } catch (Exception e) {
-                return retList;
+                e.printStackTrace();
             }
-            curHtmlPage = curHtmlPage.substring(calcLastIndex, curHtmlPage.length() - 1);
-            if (retEmailAddr != null) {
-                retList.add(retEmailAddr);
+            if (lastIteration) {
+                break;
             }
         }
         return retList;
@@ -58,8 +79,10 @@ public class EmailExtractor {
             return inputStr.substring(index + 1, curIndex);
         } else {
             int curIndex = index - iter;
-            return inputStr.substring(curIndex, index);
-
+            if (curIndex >= 0 && index >= 0 && inputStr.length() >= index) {
+                return inputStr.substring(curIndex, index);
+            }
+            return null;
         }
     }
 
@@ -76,7 +99,7 @@ public class EmailExtractor {
 
             setStr = doCalculation(inputStr, index, iter, isPlus);
 
-            if (!isAplhaNumeric(setStr)) {
+            if (setStr == null || !isAplhaNumeric(setStr)) {
                 break;
             }
             retStr = setStr;
@@ -100,9 +123,16 @@ public class EmailExtractor {
         return retStr + emailDomain;
     }
 
+    /**
+     * @param inputStr
+     * @return
+     */
     private boolean isAplhaNumeric(String inputStr) {
-        Pattern p = Pattern.compile("^[a-zA-Z0-9]+$", Pattern.CASE_INSENSITIVE);
+        String regexPattern = "^[a-zA-Z0-9-_]+$"; // "[^[a-zA-Z0-9][\\-][\\_]]*"; //"^[a-zA-Z0-9]+$";
+        Pattern p = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(inputStr);
-        return m.find();
+        boolean isAlphaNumeric = m.find();
+
+        return isAlphaNumeric;
     }
 }

@@ -1,8 +1,6 @@
-package org.Webgatherer.ExperimentalLabs.Scraper;
+package org.Webgatherer.ExperimentalLabs.Scraper.Deprecated;
 
 import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.TagNode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

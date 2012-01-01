@@ -1,4 +1,4 @@
-package org.Webgatherer.Controller;
+package org.Webgatherer.Controller.Component;
 
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
 

@@ -24,6 +24,13 @@ public class WebDriverFactory {
         return driver;
     }
 
+    public WebDriver createNewWebDriverFirefox() {
+        //WebDriver driver = new HtmlUnitDriver();
+        WebDriver driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(timeoutSeconds, TimeUnit.SECONDS);
+        return driver;
+    }
+
     public Wait createWebDriverWait(WebDriver driver, int crawlerDelay) {
         return new WebDriverWait(driver, crawlerDelay);
     }

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
 import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
+import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParser;
 import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.TextExtraction;
 import org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.EnumUrlRetrieveOptions;
 import org.apache.commons.net.nntp.Threadable;
@@ -16,17 +17,19 @@ import java.util.Date;
  */
 public class ThreadRetrievePage extends Thread {
 
-    private WebDriver driver;
+    protected WebDriver driver;
     private TextExtraction textExtraction;
-    private ThreadCommunication threadCommunication;
-    private String[] entry;
+    protected ThreadCommunication threadCommunication;
+    protected String[] entry;
     private int retrieveType;
     private ThreadCommunicationPageRetriever threadCommunicationPageRetriever;
+    protected HtmlParser htmlParser;
 
     @Inject
-    public ThreadRetrievePage(WebDriverFactory webDriverFactory, TextExtraction textExtraction) {
+    public ThreadRetrievePage(WebDriverFactory webDriverFactory, TextExtraction textExtraction, HtmlParser htmlParser) {
         driver = webDriverFactory.createNewWebDriver();
         this.textExtraction = textExtraction;
+        this.htmlParser = htmlParser;
         this.threadCommunication = threadCommunication;
     }
 
@@ -42,34 +45,39 @@ public class ThreadRetrievePage extends Thread {
     }
 
     public void retrievePageFromUrl() {
+        System.out.println("thread launched");
 
         threadCommunicationPageRetriever.registerNewThread();
 
         //if domain was marked as slow, don't attempt to load page
         if (threadCommunicationPageRetriever.doesSlowLoadingUrlsContain(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()])) {
+            threadCommunicationPageRetriever.registerKilledThread();
+            System.out.println("domain marked as slow");
             return;
         }
 
         Date before = new Date();
         try {
-            if (!textExtraction.isUrlValid(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()])) {
+
+            if (!actionIfUrlValid()) {
                 return;
             }
 
-            driver.get(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()]);
+            getPage();
 
             Date after = new Date();
 
-            //TODO put this back in, needs to be reworked now that this is in its own thread
             if (after.getTime() - before.getTime() > threadCommunicationPageRetriever.getMaxMillisecondTimeout()) {
                 //this is due to a bug in the Selenium Web Driver, it doesn't always respect the timeout setting so we need to
                 //check how long the request took and if it was too long then block all future urls from this site since it will make the crawler too slow
                 threadCommunicationPageRetriever.addSlowLoadingIgnoreUrl(entry[ThreadCommunicationBase.PageQueueEntries.KEY.ordinal()]);
+                threadCommunicationPageRetriever.registerKilledThread();
                 return;
             }
 
             if (retrieveType == EnumUrlRetrieveOptions.HTMLPAGE.ordinal()) {
-                entry[ThreadCommunicationBase.PageQueueEntries.SCRAPED_PAGE.ordinal()] = driver.getPageSource();
+                addPage();
+
             }
             if (retrieveType == EnumUrlRetrieveOptions.TEXTPAGE.ordinal()) {
                 //TODO change this, its not currently implemented
@@ -83,6 +91,22 @@ public class ThreadRetrievePage extends Thread {
         }
 
         threadCommunicationPageRetriever.registerKilledThread();
+    }
+
+    protected boolean actionIfUrlValid() {
+        if (!textExtraction.isUrlValid(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()])) {
+            threadCommunicationPageRetriever.registerKilledThread();
+            return false;
+        }
+        return true;
+    }
+
+    protected void addPage() {
+        entry[ThreadCommunicationBase.PageQueueEntries.SCRAPED_PAGE.ordinal()] = driver.getPageSource();
+    }
+
+    protected void getPage() {
+        driver.get(entry[ThreadCommunicationBase.PageQueueEntries.BASE_URL.ordinal()]);
     }
 
     public boolean isDummy() {

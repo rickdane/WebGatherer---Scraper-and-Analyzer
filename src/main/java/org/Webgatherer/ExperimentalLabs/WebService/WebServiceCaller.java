@@ -1,12 +1,13 @@
 package org.Webgatherer.ExperimentalLabs.WebService;
 
 import com.google.gson.Gson;
+import org.Webgatherer.Controller.EntityTransport.EntryTransport;
+import org.Webgatherer.Utility.Service.WebServiceClient;
 
 /**
  * @author Rick Dane
  */
 public class WebServiceCaller {
-
 
     public static void main(String[] args) throws Exception {
 
@@ -14,12 +15,10 @@ public class WebServiceCaller {
 
         Gson gson = new Gson();
 
-        Entry entryTransport = new Entry();
+        EntryTransport entryTransport = new EntryTransport();
         entryTransport.setEntry("some entry from web gatherer2222222");
         entryTransport.setDescription("sumfin'");
         String jsonStr = gson.toJson(entryTransport);
-
-        String json2 = "{description: \"entry from webgatherer\"}";
 
         WebServiceClient webService = new WebServiceClient(serviceEndpoint);
 
