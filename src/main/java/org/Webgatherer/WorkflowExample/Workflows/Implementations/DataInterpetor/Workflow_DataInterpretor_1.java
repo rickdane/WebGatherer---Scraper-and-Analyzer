@@ -1,19 +1,13 @@
 package org.Webgatherer.WorkflowExample.Workflows.Implementations.DataInterpetor;
 
 import com.google.inject.Injector;
-import org.Webgatherer.CoreEngine.Core.ThreadCommunication.FinalOutputContainer;
-import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
-import org.Webgatherer.CoreEngine.Core.Threadable.DataInterpreatation.DataInterpretor;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParserImpl;
-import org.Webgatherer.WorkflowExample.DataHolders.ContainerBase;
-import org.Webgatherer.WorkflowExample.DataHolders.DataHolderImpl;
-import org.Webgatherer.WorkflowExample.Status.StatusIndicator;
 import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.TextExtraction;
 import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.Workflow_DataInterpretorBase;
 import org.htmlcleaner.HtmlCleaner;
-import sun.plugin.dom.core.Text;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * @author Rick Dane
