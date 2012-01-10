@@ -1,8 +1,11 @@
 package org.Webgatherer.ExperimentalLabs.WebService;
 
 import com.google.gson.Gson;
+import com.rickdane.springmodularizedproject.api.transport.Scraper;
 import org.Webgatherer.Controller.EntityTransport.EntryTransport;
 import org.Webgatherer.Utility.Service.WebServiceClient;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * @author Rick Dane
@@ -11,7 +14,7 @@ public class WebServiceCaller {
 
     public static void main(String[] args) throws Exception {
 
-        String serviceEndpoint = "http://localhost:8080/springservicesmoduleroo/entrys";
+        String serviceEndpoint = "http://localhost:8080/springmodularizedproject/webgathererjobs/getPendingJobToLaunch";
 
         Gson gson = new Gson();
 
@@ -22,9 +25,12 @@ public class WebServiceCaller {
 
         WebServiceClient webService = new WebServiceClient(serviceEndpoint);
 
-        webService.servicePost("", jsonStr, "application/json");
+        String response = webService.servicePost("", jsonStr, "application/json");
 
-        String resp = webService.serviceGet("1");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Scraper scraper =  mapper.readValue(response, Scraper.class);
 
         String pause = "";
     }
