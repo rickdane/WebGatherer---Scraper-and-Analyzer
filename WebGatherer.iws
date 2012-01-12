@@ -3,13 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="81a42bf5-7994-48ac-95c3-6a7e5425a914" name="Default" comment="added in ability to build project as jar">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/target/WebGatherer.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebGatherer.iml" afterPath="$PROJECT_DIR$/WebGatherer.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebGatherer.ipr" afterPath="$PROJECT_DIR$/WebGatherer.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebGatherer.iws" afterPath="$PROJECT_DIR$/WebGatherer.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Scraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Scraper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java" afterPath="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" afterPath="$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" />
     </list>
     <ignored path="WebGatherer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -159,32 +155,6 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/Scraper/Core/ScraperBase.java" line="59" class="org.Webgatherer.ExperimentalLabs.Scraper.Core.ScraperBase" package="org.Webgatherer.ExperimentalLabs.Scraper.Core">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/Scraper/Core/ScraperBase.java" line="64" class="org.Webgatherer.ExperimentalLabs.Scraper.Core.ScraperBase" package="org.Webgatherer.ExperimentalLabs.Scraper.Core">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/WebService/WebServiceCaller.java" line="34" class="org.Webgatherer.ExperimentalLabs.WebService.WebServiceCaller" package="org.Webgatherer.ExperimentalLabs.WebService">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -198,46 +168,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" line="42" class="org.Webgatherer.Controller.Api.ApiCommunication" package="org.Webgatherer.Controller.Api">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" line="46" class="org.Webgatherer.Controller.Api.ApiCommunication" package="org.Webgatherer.Controller.Api">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Api/Scraper/ScraperFactory.java" line="16" class="org.Webgatherer.Api.Scraper.ScraperFactory" package="org.Webgatherer.Api.Scraper">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Api/Scraper/ScraperFactory.java" line="20" class="org.Webgatherer.Api.Scraper.ScraperFactory" package="org.Webgatherer.Api.Scraper">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" line="83" class="org.Webgatherer.Controller.Api.ApiCommunication" package="org.Webgatherer.Controller.Api">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -298,8 +229,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -308,31 +239,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ApiCommunication.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="0" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Rawscrapeddata.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="47" selection-start="700" selection-end="700" vertical-scroll-proportion="0.0">
+            <state line="36" column="87" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entry_ScraperGeneric.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Entry_ScraperGeneric.java">
+      <file leaf-file-name="ApiCommunication.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="21" selection-start="681" selection-end="681" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="94" column="29" selection-start="3637" selection-end="3637" vertical-scroll-proportion="0.53598017">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -341,60 +263,6 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Api/Scraper/ScraperFactory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="16" column="0" selection-start="532" selection-end="532" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="21" selection-start="2864" selection-end="2864" vertical-scroll-proportion="1.0216346">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Guice.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/Guice.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="45" selection-start="705" selection-end="705" vertical-scroll-proportion="-2.96">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InjectorBuilder.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/internal/InjectorBuilder.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="17" selection-start="1497" selection-end="1497" vertical-scroll-proportion="-2.96">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Stopwatch.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/internal/Stopwatch.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="4" selection-start="267" selection-end="267" vertical-scroll-proportion="-3.16">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DependencyBindingModule.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/DependencyInjection/DependencyBindingModule.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="0" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractModule.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/AbstractModule.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="28" selection-start="452" selection-end="452" vertical-scroll-proportion="-3.32">
               <folding />
             </state>
           </provider>
@@ -427,9 +295,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/WebService/WebServiceCaller.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Scraper.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -868,22 +736,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Global Libraries" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="166" />
-    <property name="OverrideImplement.combined" value="true" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="185" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="165" />
     <property name="project.structure.proportion" value="0.0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="183" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="180" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="179" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="$USER_HOME$/workspace/PasswordDecrypter" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="186" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="972" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="977" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="182" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="180" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="184" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="963" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="969" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="181" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="178" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
@@ -898,8 +766,8 @@
     <property name="options.lastSelected" value="copyright" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -917,7 +785,7 @@
       <recent name="org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Entry_ScraperGeneric">
+  <component name="RunManager" selected="Application.ApiCommunication">
     <configuration default="false" name="ScraperIndeed" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="org.Webgatherer.ExperimentalLabs.Scraper.Indeed.ScraperIndeed" />
       <option name="VM_PARAMETERS" />
@@ -1285,7 +1153,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298351" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.31334332" sideWeight="0.96375" order="3" side_tool="false" content_ui="tabs" x="29" y="312" width="1542" height="253" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.42428786" sideWeight="0.96375" order="3" side_tool="false" content_ui="tabs" x="29" y="312" width="1542" height="253" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3298351" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="simpleUML" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294423" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23573573" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1293,14 +1161,14 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27885863" sideWeight="0.7091454" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24448767" sideWeight="0.6731634" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298351" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29085457" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3268366" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25975975" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24967575" sideWeight="0.67016494" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3988006" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1309,7 +1177,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
@@ -1333,7 +1201,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated test webservice caller functioanlity, etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="pom" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1366,6 +1234,7 @@
     <MESSAGE value="a lot of changes, been a while since last full commit, project is in a major state of flux at the moment, will be adding integration with Spring soon" />
     <MESSAGE value="added in ability to build project as jar" />
     <MESSAGE value="updated test webservice caller functioanlity, etc" />
+    <MESSAGE value="pom" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1375,11 +1244,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/WorkflowExample/Workflows/Implementations/DataInterpetor/Workflow_DataInterpretor_1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="43" selection-start="408" selection-end="408" vertical-scroll-proportion="0.052083332" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/TransportBase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="1" selection-start="556" selection-end="556" vertical-scroll-proportion="0.0" />
@@ -1392,79 +1256,71 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Scraper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="27" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="33" column="27" selection-start="550" selection-end="550" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/WebService/WebServiceCaller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="40" selection-start="880" selection-end="880" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="23" column="40" selection-start="880" selection-end="880" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Base/EntryBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="3" selection-start="516" selection-end="705" vertical-scroll-proportion="0.0">
+        <state line="16" column="3" selection-start="516" selection-end="705" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Entry_ScraperGeneric.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="21" selection-start="681" selection-end="681" vertical-scroll-proportion="0.59016395">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/Scraper/Core/ScraperBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="47" selection-start="700" selection-end="700" vertical-scroll-proportion="0.0">
+        <state line="59" column="0" selection-start="1942" selection-end="1942" vertical-scroll-proportion="0.039432175">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/AbstractModule.class">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="28" selection-start="452" selection-end="452" vertical-scroll-proportion="-3.32">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/DependencyInjection/DependencyBindingModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="0" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.0">
+        <state line="83" column="21" selection-start="2864" selection-end="2864" vertical-scroll-proportion="0.039432175">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/Guice.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="45" selection-start="705" selection-end="705" vertical-scroll-proportion="-2.96">
+        <state line="15" column="45" selection-start="705" selection-end="705" vertical-scroll-proportion="0.6291946">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/internal/InjectorBuilder.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="17" selection-start="1497" selection-end="1497" vertical-scroll-proportion="-2.96">
+        <state line="29" column="17" selection-start="1497" selection-end="1497" vertical-scroll-proportion="0.04194631">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/internal/Stopwatch.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="4" selection-start="267" selection-end="267" vertical-scroll-proportion="-3.16">
+        <state line="9" column="4" selection-start="267" selection-end="267" vertical-scroll-proportion="0.36945814">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/ExperimentalLabs/DependencyInjection/DependencyBindingModule.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="0" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="27" column="0" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.039432175">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Entry_ScraperGeneric.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/com/google/inject/AbstractModule.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="21" selection-start="681" selection-end="681" vertical-scroll-proportion="0.0">
+        <state line="12" column="28" selection-start="452" selection-end="452" vertical-scroll-proportion="0.04194631">
           <folding />
         </state>
       </provider>
@@ -1476,10 +1332,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/rickdane/springmodularizedproject/api/transport/Rawscrapeddata.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="21" selection-start="2864" selection-end="2864" vertical-scroll-proportion="1.0216346">
+        <state line="36" column="87" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/Webgatherer/Controller/Api/ApiCommunication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="29" selection-start="3637" selection-end="3637" vertical-scroll-proportion="0.53598017">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

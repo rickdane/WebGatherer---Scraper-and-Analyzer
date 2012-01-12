@@ -15,9 +15,15 @@ public class Rawscrapeddata {
 
     private Rawscrapeddatamigrationstatus rawscrapeddatamigrationstatus;
 
+    private RawscrapeddataEmailScrapeAttempted rawscrapeddataEmailScrapeAttempted;
+
     public enum Rawscrapeddatamigrationstatus {
 
         NOT_MIGRATED, MIGRATED;
+    }
+
+    public enum RawscrapeddataEmailScrapeAttempted {
+        ATTEMPTED, NOT_ATTEMPTED
     }
 
     public String getUrl() {
@@ -26,6 +32,14 @@ public class Rawscrapeddata {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public RawscrapeddataEmailScrapeAttempted getRawscrapeddataEmailScrapeAttempted() {
+        return rawscrapeddataEmailScrapeAttempted;
+    }
+
+    public void setRawscrapeddataEmailScrapeAttempted(RawscrapeddataEmailScrapeAttempted rawscrapeddataEmailScrapeAttempted) {
+        this.rawscrapeddataEmailScrapeAttempted = rawscrapeddataEmailScrapeAttempted;
     }
 
     public String getEmailAddress() {
