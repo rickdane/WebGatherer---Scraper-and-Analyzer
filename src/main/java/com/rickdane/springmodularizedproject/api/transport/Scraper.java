@@ -1,18 +1,21 @@
 package com.rickdane.springmodularizedproject.api.transport;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Rick Dane
  */
 public class Scraper {
 
-    enum ProcessStatus {
+    public enum ProcessStatus {
 
         NOT_PROCESSED, PROCESSED, IN_PROGRESS
 
     }
+
+    public enum Type {
+        CRAIGSLIST, INDEED, EMAIL_SCRAPE, URL_SCRAPE;
+    }
+
+    private Type type;
 
     private String name;
 
@@ -26,6 +29,14 @@ public class Scraper {
 
     public boolean isProcessed() {
         return isProcessed;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public void setProcessed(boolean processed) {
