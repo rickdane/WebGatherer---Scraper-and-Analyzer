@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.entity.StringEntity;
@@ -53,6 +54,12 @@ public class WebServiceClient {
         HttpPost httpPost = new HttpPost(webServiceUrl + methodName);
 
         return serviceCall(methodName, data, contentType, httpPost);
+    }
+
+    public String servicePut(String methodName, String data, String contentType) {
+        HttpPut httpPut = new HttpPut(webServiceUrl + methodName);
+
+        return serviceCall(methodName, data, contentType, httpPut);
     }
 
     private String serviceCall(String methodName, String data, String contentType, HttpEntityEnclosingRequestBase httpEntityEnclosingRequestBase) {

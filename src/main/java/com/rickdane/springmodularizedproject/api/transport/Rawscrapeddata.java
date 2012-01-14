@@ -5,6 +5,10 @@ package com.rickdane.springmodularizedproject.api.transport;
  */
 public class Rawscrapeddata {
 
+    private Long id;
+
+    private int version;
+
     private String url;
 
     private String emailAddress;
@@ -23,7 +27,7 @@ public class Rawscrapeddata {
     }
 
     public enum RawscrapeddataEmailScrapeAttempted {
-        ATTEMPTED, NOT_ATTEMPTED
+        ATTEMPTED, NOT_ATTEMPTED,IN_PROGRESS
     }
 
     public String getUrl() {
@@ -40,6 +44,22 @@ public class Rawscrapeddata {
 
     public void setRawscrapeddataEmailScrapeAttempted(RawscrapeddataEmailScrapeAttempted rawscrapeddataEmailScrapeAttempted) {
         this.rawscrapeddataEmailScrapeAttempted = rawscrapeddataEmailScrapeAttempted;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public String getEmailAddress() {

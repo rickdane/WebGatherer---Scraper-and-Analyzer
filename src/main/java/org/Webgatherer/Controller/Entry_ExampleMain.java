@@ -41,6 +41,8 @@ public class Entry_ExampleMain {
         driver.get(url);
         driver.get(url);
 
+
+
         List<WebElement> links;
         List<String[]> initialUrls = new ArrayList<String[]>();
         List<String> urls = new ArrayList<String>();
