@@ -10,7 +10,7 @@ import org.Webgatherer.ExperimentalLabs.EmailExtraction.PageRetrieverThreadManag
 import org.Webgatherer.ExperimentalLabs.EmailExtraction.ThreadRetrievePageEmailExtraction;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParser;
 import org.Webgatherer.ExperimentalLabs.HtmlProcessing.HtmlParserImpl;
-import org.Webgatherer.ExperimentalLabs.Mail.SendEmail;
+import org.Webgatherer.ExperimentalLabs.Mail.EmailSendReceive;
 import org.Webgatherer.ExperimentalLabs.Scraper.Core.PageRetrieverThreadManagerScraper;
 import org.Webgatherer.ExperimentalLabs.Scraper.Generic.ScraperGeneric;
 import org.Webgatherer.ExperimentalLabs.Scraper.Google.GoogleExtractUrls;
@@ -37,7 +37,7 @@ public class DependencyBindingModule extends AbstractModule {
         bind(ThreadCommunication.class).to(ThreadCommunicationImpl.class);
         bind(EmailExtractor.class);
         bind(ThreadRetrievePageIndeed.class);
-        bind(SendEmail.class);
+        bind(EmailSendReceive.class);
         bind(ReadFiles.class);
         bind(PersistenceImpl_WriteToFile.class);
         bind(RandomSelector.class).in(Singleton.class);

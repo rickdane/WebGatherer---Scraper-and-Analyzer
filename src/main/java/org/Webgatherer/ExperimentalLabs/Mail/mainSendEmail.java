@@ -2,11 +2,8 @@ package org.Webgatherer.ExperimentalLabs.Mail;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.Webgatherer.CoreEngine.lib.WebDriverFactory;
 import org.Webgatherer.ExperimentalLabs.DependencyInjection.DependencyBindingModule;
-import org.Webgatherer.Persistence.InputOutput.Persistence;
 import org.Webgatherer.Persistence.InputOutput.PersistenceImpl_WriteToFile;
-import org.Webgatherer.Persistence.InputOutput.ReadFromFileToList;
 import org.Webgatherer.Utility.RandomSelector;
 import org.Webgatherer.Utility.ReadFiles;
 import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.EmailExtractor;
@@ -14,7 +11,6 @@ import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.EmailExtrac
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Rick Dane
@@ -45,7 +41,7 @@ public class mainSendEmail {
     public static void main(String[] args) {
 
         Injector injector = Guice.createInjector(new DependencyBindingModule());
-        SendEmail sendEmail = injector.getInstance(SendEmail.class);
+        EmailSendReceive emailSendReceive = injector.getInstance(EmailSendReceive.class);
 
         randomSelector = injector.getInstance(RandomSelector.class);
 
@@ -56,8 +52,8 @@ public class mainSendEmail {
         List<String> emailSubjects = readFiles.readFilesToCollection(messagesSubjectFolder);
         List<String> emailBodies = readFiles.readFilesToCollection(messagesBodyFolder);
 
-        //sendEmail.configure("Rick Dane", "smtp.gmx.com", "rick_developer@gmx.com", "blient8030", "465");
-        sendEmail.configure("Rick Dane", "smtp.gmail.com", "r.dane1010@gmail.com", "blient8030", "465");
+        //emailSendReceive.configure("Rick Dane", "smtp.gmx.com", "rick_developer@gmx.com", "blient8030", "465");
+        emailSendReceive.configure("Rick Dane", "smtp.gmail.com", "r.dane1010@gmail.com", "blient8030", "465");
 
         Collection<String> emailAddresses = readFiles.readLinesToList(singleFileInputPath);
 
@@ -71,7 +67,7 @@ public class mainSendEmail {
             } else {
                 String body = emailBodies.get(randomSelector.randomListIndex(emailBodies));
                 String subject = emailSubjects.get(randomSelector.randomListIndex(emailSubjects));
-                sendEmail.sendEmail(body, subject, curEmail, attachmentFilePath);   //curEmail
+                emailSendReceive.sendEmail(body, subject, curEmail, attachmentFilePath);   //curEmail
 
                 System.out.println("sending email to: " + curEmail);
 

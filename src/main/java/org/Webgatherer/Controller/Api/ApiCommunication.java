@@ -2,10 +2,7 @@ package org.Webgatherer.Controller.Api;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.rickdane.springmodularizedproject.api.transport.EmailTransport;
-import com.rickdane.springmodularizedproject.api.transport.Rawscrapeddata;
-import com.rickdane.springmodularizedproject.api.transport.Scraper;
-import com.rickdane.springmodularizedproject.api.transport.TransportBase;
+import com.rickdane.springmodularizedproject.api.transport.*;
 import org.Webgatherer.Api.Scraper.ScraperFactory;
 import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.Controller.EntityTransport.EntryTransport;
@@ -13,12 +10,9 @@ import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
 import org.Webgatherer.ExperimentalLabs.DependencyInjection.DependencyBindingModule;
 import org.Webgatherer.ExperimentalLabs.EmailExtraction.PageRetrieverThreadManagerEmailExtraction;
-import org.Webgatherer.ExperimentalLabs.Mail.SendEmail;
+import org.Webgatherer.ExperimentalLabs.Mail.EmailSendReceive;
 import org.Webgatherer.ExperimentalLabs.Scraper.Core.ScraperBase;
-import org.Webgatherer.Persistence.InputOutput.PersistenceImpl_WriteToFile;
 import org.Webgatherer.Utility.RandomSelector;
-import org.Webgatherer.Utility.ReadFiles;
-import org.Webgatherer.WorkflowExample.Workflows.Base.DataInterpetor.EmailExtractor;
 import org.Webgatherer.WorkflowExample.Workflows.Implementations.WebGatherer.EnumUrlRetrieveOptions;
 
 import java.util.*;
@@ -49,14 +43,19 @@ public class ApiCommunication extends BaseApiCommunication {
     private static int maxUrlEmailScrapeUrls = 20;
 
     private static int sizeOfStringArrayEnum = 9;
-    
+
     private static PropertiesContainer propertiesContainer = new PropertiesContainer();
 
     public static void main(String[] args) {
 
+        emailImap.configureImap(emailProperties.getProperty("email1_imap"), emailProperties.getProperty("email1_imap_username"), emailProperties.getProperty("email1_password"));
+
+
         while (isRunning) {
+
+
             EntryTransport entryTransport = new EntryTransport();
-            Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
+//            Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
 
 //            runUrlScrapeJob(curScraper);
 //
@@ -68,7 +67,9 @@ public class ApiCommunication extends BaseApiCommunication {
 //                getEmailAndSend();
 //            }
 
-            postEmailList();
+            //postEmailList();
+
+            List<ReceivedEmail> receivedEmailList = emailImap.retrieveUnreadEmails();
 
             sleep();
 
@@ -96,10 +97,10 @@ public class ApiCommunication extends BaseApiCommunication {
         }
 
     }
-    
+
     private static void postEmailList() {
-       
-        List<EmailTransport> emailTransportList = new ArrayList<EmailTransport> ();
+
+        List<EmailTransport> emailTransportList = new ArrayList<EmailTransport>();
 
         EmailTransport trans1 = new EmailTransport();
 
@@ -215,26 +216,31 @@ public class ApiCommunication extends BaseApiCommunication {
     }
 
 
-//    private static final int minDelay = 90000;
+    //    private static final int minDelay = 90000;
 //    private static final int maxDelay = 260000;
     private static final int minDelay = 3000;
     private static final int maxDelay = 7000;
 
+    private static Injector injector = Guice.createInjector(new DependencyBindingModule());
+
+    private static EmailSendReceive emailSendReceive = injector.getInstance(EmailSendReceive.class);
+
+    private static EmailSendReceive emailImap = injector.getInstance(EmailSendReceive.class);
+
     private static RandomSelector randomSelector;
     private static Date nextEmailSendTime = null;
-    
+
     private static Properties emailProperties = propertiesContainer.getProperties("emailAccounts");
 
     private static void sendEmail(EmailTransport emailTransport) {
-        Injector injector = Guice.createInjector(new DependencyBindingModule());
 
-        SendEmail sendEmail = injector.getInstance(SendEmail.class);
-        sendEmail.configure(emailProperties.getProperty("email_fromName"), emailProperties.getProperty("email1_smtp"), emailProperties.getProperty("email1_address"),emailProperties.getProperty("email1_password"), emailProperties.getProperty("email1_smtp_port"));
+
+        emailSendReceive.configure(emailProperties.getProperty("email_fromName"), emailProperties.getProperty("email1_smtp"), emailProperties.getProperty("email1_address"), emailProperties.getProperty("email1_password"), emailProperties.getProperty("email1_smtp_port"));
         String attachmentFilePath = emailProperties.getProperty("email_attachment1");
 
         String body = emailTransport.getBody();
         String subject = emailTransport.getSubject();
-        sendEmail.sendEmail(body, subject, emailTransport.getToEmail(), attachmentFilePath);   //curEmail
+        emailSendReceive.sendEmail(body, subject, emailTransport.getToEmail(), attachmentFilePath);   //curEmail
 
         randomSelector = injector.getInstance(RandomSelector.class);
         int delay = randomSelector.generateRandomNumberInRange(minDelay, maxDelay);

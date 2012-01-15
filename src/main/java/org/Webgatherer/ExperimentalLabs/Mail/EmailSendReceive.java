@@ -1,5 +1,7 @@
 package org.Webgatherer.ExperimentalLabs.Mail;
 
+import com.rickdane.springmodularizedproject.api.transport.ReceivedEmail;
+import com.sun.mail.pop3.POP3SSLStore;
 import de.agitos.dkim.DKIMSigner;
 import de.agitos.dkim.SMTPDKIMMessage;
 
@@ -7,21 +9,27 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.mail.search.FlagTerm;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.util.*;
 
 /**
  * @author Rick Dane
  */
-public class SendEmail {
+public class EmailSendReceive {
 
     private String smtpHost;
     private String fromName;
     private String userId;
     private String password;
-    String port;
+    private String port;
+
+    private String imap_address;
+    private String imap_username;
+    private String imap_password;
 
     public void configure(String fromName, String smtpHost, String userId, String password, String port) {
         this.fromName = fromName;
@@ -29,6 +37,12 @@ public class SendEmail {
         this.userId = userId;
         this.password = password;
         this.port = port;
+    }
+
+    public void configureImap(String imap_address, String imap_username, String imap_password) {
+        this.imap_address = imap_address;
+        this.imap_username = imap_username;
+        this.imap_password = imap_password;
     }
 
     public void sendEmail(String text, String subject, String to, String attachmentPath) {
@@ -88,5 +102,46 @@ public class SendEmail {
             e.printStackTrace();
         }
     }
-}
 
+
+    public List<ReceivedEmail> retrieveUnreadEmails() {
+
+        List<ReceivedEmail> receivedEmailList = new ArrayList<ReceivedEmail>();
+
+        Properties props = System.getProperties();
+        props.setProperty("mail.store.protocol", "imaps");
+        Store store = null;
+        try {
+            Session session = Session.getDefaultInstance(props, null);
+            store = session.getStore("imaps");
+            store.connect(imap_address, imap_username, imap_password);
+
+            Folder inbox = store.getFolder("Inbox");
+            inbox.open(Folder.READ_WRITE);
+
+            FlagTerm ft = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+            Message messages[] = inbox.search(ft);
+
+            for (Message message : messages) {
+
+                ReceivedEmail receivedEmail = ReceivedEmail.createFromMessage(message);
+                receivedEmailList.add(receivedEmail);
+            }
+
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.exit(2);
+        } finally {
+            try {
+                store.close();
+            } catch (MessagingException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        return receivedEmailList;
+    }
+
+}
