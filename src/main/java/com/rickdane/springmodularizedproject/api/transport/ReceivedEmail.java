@@ -4,7 +4,6 @@ import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.Multipart;
-import javax.mail.internet.InternetAddress;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,9 +14,9 @@ import javax.mail.internet.InternetAddress;
  */
 public class ReceivedEmail {
 
-    private String from;
+    private String fromAddress;
 
-    private String to;
+    private String toAddress;
 
     private String subject;
 
@@ -27,7 +26,7 @@ public class ReceivedEmail {
 
         ReceivedEmail receivedEmail = new ReceivedEmail();
 
-        String contentTypeToRetrieve = "TEXT/HTML";
+        String contentTypeToRetrieve = "TEXT/PLAIN";
 
         try {
 
@@ -50,8 +49,8 @@ public class ReceivedEmail {
             Address[] fromArray =  message.getFrom();
             Address[] toArray =  message.getReplyTo();
 
-            receivedEmail.setFrom(fromArray[0].toString());
-            receivedEmail.setTo(toArray[0].toString());
+            receivedEmail.setFromAddress(fromArray[0].toString());
+            receivedEmail.setToAddress(toArray[0].toString());
             receivedEmail.setSubject(message.getSubject().toString());
 
             System.out.println();
@@ -63,20 +62,20 @@ public class ReceivedEmail {
     }
 
 
-    public String getFrom() {
-        return from;
+    public String getFromAddress() {
+        return fromAddress;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
     }
 
-    public String getTo() {
-        return to;
+    public String getToAddress() {
+        return toAddress;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
     }
 
     public String getSubject() {

@@ -30,7 +30,7 @@ public class ApiCommunication extends BaseApiCommunication {
     private static final String servicePersistRawscrapeddata = baseApiUrl + "rawscrapeddatas";
     private static final String serviceUrlsAwaitingEmailScrape = baseApiUrl + "rawscrapeddatas/retrieveUrlsAwaitingEmailScrape";
     private static final String scraperEndPoint = baseApiUrl + "/scrapers";
-    private static final String postEmailListEndPoint = baseApiUrl + "/emailaddresses/postEmailMessages";
+    private static final String postEmailListEndPoint = baseApiUrl + "/receivedemails/uploadNewRetrievedEmails";
 
     private static final String emailToSendEndPoint = baseApiUrl + "/emailaddresses/getEmailToSend";
 
@@ -67,13 +67,18 @@ public class ApiCommunication extends BaseApiCommunication {
 //                getEmailAndSend();
 //            }
 
-            //postEmailList();
-
-            List<ReceivedEmail> receivedEmailList = emailImap.retrieveUnreadEmails();
+            runEmailRetrieve();
 
             sleep();
 
         }
+    }
+
+    private static void runEmailRetrieve() {
+
+        List<ReceivedEmail> receivedEmailList = emailImap.retrieveUnreadEmails();
+
+        apiPost(receivedEmailList, postEmailListEndPoint);
     }
 
 
@@ -98,22 +103,6 @@ public class ApiCommunication extends BaseApiCommunication {
 
     }
 
-    private static void postEmailList() {
-
-        List<EmailTransport> emailTransportList = new ArrayList<EmailTransport>();
-
-        EmailTransport trans1 = new EmailTransport();
-
-        trans1.setSubject("hi this is a test");
-
-        EmailTransport trans2 = new EmailTransport();
-        trans2.setSubject("just something to check what its doing, yeah");
-
-        emailTransportList.add(trans1);
-        emailTransportList.add(trans2);
-
-        apiPost(emailTransportList, postEmailListEndPoint);
-    }
 
     private static boolean runUrlScrapeJob(Scraper curScraper) {
 
