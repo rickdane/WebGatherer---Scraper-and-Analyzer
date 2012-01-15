@@ -7,6 +7,7 @@ import com.rickdane.springmodularizedproject.api.transport.Rawscrapeddata;
 import com.rickdane.springmodularizedproject.api.transport.Scraper;
 import com.rickdane.springmodularizedproject.api.transport.TransportBase;
 import org.Webgatherer.Api.Scraper.ScraperFactory;
+import org.Webgatherer.Common.Properties.PropertiesContainer;
 import org.Webgatherer.Controller.EntityTransport.EntryTransport;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunication;
 import org.Webgatherer.CoreEngine.Core.ThreadCommunication.ThreadCommunicationBase;
@@ -35,6 +36,8 @@ public class ApiCommunication extends BaseApiCommunication {
     private static final String servicePersistRawscrapeddata = baseApiUrl + "rawscrapeddatas";
     private static final String serviceUrlsAwaitingEmailScrape = baseApiUrl + "rawscrapeddatas/retrieveUrlsAwaitingEmailScrape";
     private static final String scraperEndPoint = baseApiUrl + "/scrapers";
+    private static final String postEmailListEndPoint = baseApiUrl + "/emailaddresses/postEmailMessages";
+
     private static final String emailToSendEndPoint = baseApiUrl + "/emailaddresses/getEmailToSend";
 
     private static int callIntervalSeconds = 10;
@@ -46,6 +49,8 @@ public class ApiCommunication extends BaseApiCommunication {
     private static int maxUrlEmailScrapeUrls = 20;
 
     private static int sizeOfStringArrayEnum = 9;
+    
+    private static PropertiesContainer propertiesContainer = new PropertiesContainer();
 
     public static void main(String[] args) {
 
@@ -53,19 +58,20 @@ public class ApiCommunication extends BaseApiCommunication {
             EntryTransport entryTransport = new EntryTransport();
             Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
 
-            runUrlScrapeJob(curScraper);
-
-            runEmailScrapeJob();
+//            runUrlScrapeJob(curScraper);
+//
+//            runEmailScrapeJob();
 
             Date curTime = new Date();
 
-            if (nextEmailSendTime == null || curTime.getTime() > nextEmailSendTime.getTime()) {
-                getEmailAndSend();
-            }
+//            if (nextEmailSendTime == null || curTime.getTime() > nextEmailSendTime.getTime()) {
+//                getEmailAndSend();
+//            }
+
+            postEmailList();
 
             sleep();
 
-            String pause = "";
         }
     }
 
@@ -89,6 +95,23 @@ public class ApiCommunication extends BaseApiCommunication {
             runEmailExtractionJob(rawscrapeddataList);
         }
 
+    }
+    
+    private static void postEmailList() {
+       
+        List<EmailTransport> emailTransportList = new ArrayList<EmailTransport> ();
+
+        EmailTransport trans1 = new EmailTransport();
+
+        trans1.setSubject("hi this is a test");
+
+        EmailTransport trans2 = new EmailTransport();
+        trans2.setSubject("just something to check what its doing, yeah");
+
+        emailTransportList.add(trans1);
+        emailTransportList.add(trans2);
+
+        apiPost(emailTransportList, postEmailListEndPoint);
     }
 
     private static boolean runUrlScrapeJob(Scraper curScraper) {
@@ -121,7 +144,7 @@ public class ApiCommunication extends BaseApiCommunication {
 
     private static void sleep() {
         try {
-            Thread.sleep(callIntervalSeconds * 10);
+            Thread.sleep(callIntervalSeconds * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -184,23 +207,30 @@ public class ApiCommunication extends BaseApiCommunication {
         //dummy object
         TransportBase transportBase = new TransportBase();
 
-        EmailTransport emailTransport = apiPost(transportBase,emailToSendEndPoint,EmailTransport.class);
+        EmailTransport emailTransport = apiPost(transportBase, emailToSendEndPoint, EmailTransport.class);
+        if (emailTransport.getToEmail() != null) {
+            sendEmail(emailTransport);
+        }
 
-        sendEmail(emailTransport);
     }
 
 
-    private static final int minDelay = 90000;
-    private static final int maxDelay = 260000;
+//    private static final int minDelay = 90000;
+//    private static final int maxDelay = 260000;
+    private static final int minDelay = 3000;
+    private static final int maxDelay = 7000;
+
     private static RandomSelector randomSelector;
     private static Date nextEmailSendTime = null;
+    
+    private static Properties emailProperties = propertiesContainer.getProperties("emailAccounts");
 
     private static void sendEmail(EmailTransport emailTransport) {
         Injector injector = Guice.createInjector(new DependencyBindingModule());
 
         SendEmail sendEmail = injector.getInstance(SendEmail.class);
-        sendEmail.configure("Rick Dane", "smtp.gmail.com", "r.dane1010@gmail.com", "blient8030", "465");
-        String attachmentFilePath = "/home/user/Dropbox/Rick/RickDane_Java_SoftwareDeveloper.doc";
+        sendEmail.configure(emailProperties.getProperty("email_fromName"), emailProperties.getProperty("email1_smtp"), emailProperties.getProperty("email1_address"),emailProperties.getProperty("email1_password"), emailProperties.getProperty("email1_smtp_port"));
+        String attachmentFilePath = emailProperties.getProperty("email_attachment1");
 
         String body = emailTransport.getBody();
         String subject = emailTransport.getSubject();

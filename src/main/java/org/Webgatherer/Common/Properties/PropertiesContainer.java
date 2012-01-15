@@ -12,7 +12,7 @@ import java.util.Properties;
 public class PropertiesContainer {
 
     private final String basePath = "/home/user/Dropbox/Rick/WebGatherer/WebGatherer---Scraper-and-Analyzer/src/main/resources/Webgatherer/";
-    private final String[] propertiesFilePaths = {"WorkflowExample/WorkflowExample", "CoreEngine/CoreEngine"};
+    private final String[] propertiesFilePaths = {"WorkflowExample/WorkflowExample", "CoreEngine/CoreEngine","UserData/emailAccounts"};
     private static Map<String, Properties> propertiesMap;
     private static boolean isInitialized = false;
 
