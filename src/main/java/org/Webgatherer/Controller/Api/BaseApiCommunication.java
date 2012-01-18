@@ -21,7 +21,12 @@ public class BaseApiCommunication {
 
         String apiResponse = webService.servicePost("", jsonStr, apiHeader);
 
-        T object = deserializeFromJson(apiResponse, clazz);
+        T object = null;
+        try {
+            object = deserializeFromJson(apiResponse, clazz);
+        } catch (Exception e) {
+
+        }
 
         return object;
     }

@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class ApiCommunication extends BaseApiCommunication {
 
-    private static final String baseApiUrl = "http://localhost:8080/springmodularizedproject/";
+    private static final String baseApiUrl = "http://ec2-107-21-182-174.compute-1.amazonaws.com:8080/";
     private static final String serviceEndpointGetScraper = baseApiUrl + "webgathererjobs/getPendingJobToLaunch";
     private static final String servicePersistRawscrapeddata = baseApiUrl + "rawscrapeddatas";
     private static final String serviceUrlsAwaitingEmailScrape = baseApiUrl + "rawscrapeddatas/retrieveUrlsAwaitingEmailScrape";
@@ -38,7 +38,7 @@ public class ApiCommunication extends BaseApiCommunication {
     private static boolean isRunning = true;
 
     private static int pageNum = 1;
-    private static int maxPages = 1;
+    private static int maxPages = 2;
 
     private static int maxUrlEmailScrapeUrls = 20;
 
@@ -55,19 +55,19 @@ public class ApiCommunication extends BaseApiCommunication {
 
 
             EntryTransport entryTransport = new EntryTransport();
-//            Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
+            Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
 
-//            runUrlScrapeJob(curScraper);
-//
-//            runEmailScrapeJob();
+            runUrlScrapeJob(curScraper);
+
+            runEmailScrapeJob();
 
             Date curTime = new Date();
 
-//            if (nextEmailSendTime == null || curTime.getTime() > nextEmailSendTime.getTime()) {
-//                getEmailAndSend();
-//            }
+            if (nextEmailSendTime == null || curTime.getTime() > nextEmailSendTime.getTime()) {
+                getEmailAndSend();
+            }
 
-            runEmailRetrieve();
+            //runEmailRetrieve();
 
             sleep();
 
@@ -198,17 +198,20 @@ public class ApiCommunication extends BaseApiCommunication {
         TransportBase transportBase = new TransportBase();
 
         EmailTransport emailTransport = apiPost(transportBase, emailToSendEndPoint, EmailTransport.class);
-        if (emailTransport.getToEmail() != null) {
-            sendEmail(emailTransport);
+        String body = emailTransport.getBody();
+        if (body != null) {
+            body = body.replace("//n", "/n");
+            emailTransport.setBody(body);
+            if (emailTransport.getToEmail() != null) {
+                sendEmail(emailTransport);
+            }
         }
 
     }
 
 
-    //    private static final int minDelay = 90000;
-//    private static final int maxDelay = 260000;
-    private static final int minDelay = 3000;
-    private static final int maxDelay = 7000;
+    private static final int minDelay = 250000;
+    private static final int maxDelay = 800000;
 
     private static Injector injector = Guice.createInjector(new DependencyBindingModule());
 

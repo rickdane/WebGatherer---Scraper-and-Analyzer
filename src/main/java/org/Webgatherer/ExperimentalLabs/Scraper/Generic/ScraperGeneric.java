@@ -18,7 +18,6 @@ public class ScraperGeneric extends ScraperBase {
 
     protected String urlPrefix = "http://sfbay.craigslist.org/search/?areaID=1&catAbb=jjj&query=";
     protected String urlSecond = "";
-    protected String javaScriptLinkIdentifier = "";
 
     protected int numberResultsPerPageCustom = 100;
     protected HtmlParser htmlParser;
