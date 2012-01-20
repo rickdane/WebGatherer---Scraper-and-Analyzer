@@ -134,7 +134,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.Webgatherer.Controller.Entry_ScraperGeneric</mainClass>
+                            <mainClass>org.Webgatherer.Controller.Api.ApiCommunication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

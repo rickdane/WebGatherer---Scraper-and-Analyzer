@@ -1,9 +1,6 @@
 package org.Webgatherer.ExperimentalLabs.Mail;
 
 import com.rickdane.springmodularizedproject.api.transport.ReceivedEmail;
-import com.sun.mail.pop3.POP3SSLStore;
-import de.agitos.dkim.DKIMSigner;
-import de.agitos.dkim.SMTPDKIMMessage;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;

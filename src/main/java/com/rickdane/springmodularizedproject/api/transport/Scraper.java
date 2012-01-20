@@ -27,6 +27,56 @@ public class Scraper {
 
     private boolean isProcessed;
 
+    private String urlPrefix;
+
+    private String urlPostfix;
+
+    private String keyword;
+
+    private String baseDomainName;
+
+    private int pageIncrementAmnt;
+
+    public int getPageIncrementAmnt() {
+        return pageIncrementAmnt;
+    }
+
+    public void setPageIncrementAmnt(int pageIncrementAmnt) {
+        this.pageIncrementAmnt = pageIncrementAmnt;
+    }
+
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+    }
+
+    public String getUrlPostfix() {
+        return urlPostfix;
+    }
+
+    public void setUrlPostfix(String urlPostfix) {
+        this.urlPostfix = urlPostfix;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getBaseDomainName() {
+        return baseDomainName;
+    }
+
+    public void setBaseDomainName(String baseDomainName) {
+        this.baseDomainName = baseDomainName;
+    }
+
     public boolean isProcessed() {
         return isProcessed;
     }

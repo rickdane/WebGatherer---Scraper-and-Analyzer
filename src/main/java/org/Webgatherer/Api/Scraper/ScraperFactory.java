@@ -24,6 +24,9 @@ public class ScraperFactory {
             scraperBase = injector.getInstance(ScraperIndeed.class);
 
         } else if (scraperIdentifier.equalsIgnoreCase("generic")) {
+
+            //THIS IS THE ONE TO USE IN MOST CASES AS WE ARE ADDING IN ABILITY TO PASS IN URL PATTERN FROM UI
+
             scraperBase = injector.getInstance(ScraperGeneric.class);
         }
 

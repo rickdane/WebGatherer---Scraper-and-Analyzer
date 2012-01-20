@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ApiCommunication extends BaseApiCommunication {
 
     private static final String baseApiUrl = "http://ec2-107-21-182-174.compute-1.amazonaws.com:8080/";
+    //private static final String baseApiUrl = "http://localhost:8080/springmodularizedproject1/";
     private static final String serviceEndpointGetScraper = baseApiUrl + "webgathererjobs/getPendingJobToLaunch";
     private static final String servicePersistRawscrapeddata = baseApiUrl + "rawscrapeddatas";
     private static final String serviceUrlsAwaitingEmailScrape = baseApiUrl + "rawscrapeddatas/retrieveUrlsAwaitingEmailScrape";
@@ -57,7 +58,9 @@ public class ApiCommunication extends BaseApiCommunication {
             EntryTransport entryTransport = new EntryTransport();
             Scraper curScraper = apiPost(entryTransport, serviceEndpointGetScraper, Scraper.class);
 
-            runUrlScrapeJob(curScraper);
+            if (curScraper != null) {
+                runUrlScrapeJob(curScraper);
+            }
 
             runEmailScrapeJob();
 
@@ -115,8 +118,9 @@ public class ApiCommunication extends BaseApiCommunication {
         }
 
         ScraperBase scraper = ScraperFactory.createScraper(scraperType);
+        scraper.configure(curScraper.getUrlPrefix(), curScraper.getUrlPostfix(), curScraper.getBaseDomainName(), curScraper.getPageIncrementAmnt());
 
-        List<String[]> urlEntries = scraper.run("java", pageNum, maxPages);
+        List<String[]> urlEntries = scraper.run(curScraper.getKeyword(), pageNum, maxPages);
 
         for (String[] curEntry : urlEntries) {
             Rawscrapeddata rawscrapeddata = new Rawscrapeddata();
@@ -198,6 +202,9 @@ public class ApiCommunication extends BaseApiCommunication {
         TransportBase transportBase = new TransportBase();
 
         EmailTransport emailTransport = apiPost(transportBase, emailToSendEndPoint, EmailTransport.class);
+        if (emailTransport == null) {
+            return;
+        }
         String body = emailTransport.getBody();
         if (body != null) {
             body = body.replace("//n", "/n");

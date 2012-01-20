@@ -58,7 +58,7 @@ public class BaseApiCommunication {
         try {
             object = mapper.readValue(response, clazz);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return object;
     }

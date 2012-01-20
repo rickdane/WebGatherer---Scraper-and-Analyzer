@@ -34,6 +34,10 @@ public abstract class ScraperBase {
         this.pageRetrieverThreadManager = pageRetrieverThreadManager;
     }
 
+    public void configure (String urlPrefix, String urlPostfix, String baseDomainName, int pageIncrementAmnt)  {
+        return;
+    }
+
     public List<String[]> run(String searchString, int startPageNumber, int endPageNumber) {
 
         Injector injector = Guice.createInjector(new DependencyBindingModule());
